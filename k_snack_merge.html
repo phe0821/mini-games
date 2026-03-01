@@ -777,18 +777,22 @@
 
                         if (nextLevel === 5) { playGoodSound(); triggerEffect('good-effect', 'show-good'); } 
                         else if (nextLevel === 6) { playGreatSound(); triggerEffect('great-effect', 'show-great'); } 
-                        else if (nextLevel === 7) { playWowSound(); triggerEffect('wow-effect', 'show-wow'); } 
+                        else if (nextLevel === 7) { 
+			totalChickens++; 
+                            localStorage.setItem('kSnackTotalChickens', totalChickens);
+                            document.getElementById('total-chicken').innerText = totalChickens;
+                            
+                            playWowSound(); 
+                            triggerEffect('wow-effect', 'show-wow'); 
+                        }
                         else { playMergeSound(nextLevel); }
                     } 
-                    else if (nextLevel === 7) { 
-    // 💡 황금치킨 탄생 보상 (+1마리) 로직 추가
-    totalChickens++; 
-    localStorage.setItem('kSnackTotalChickens', totalChickens);
-    document.getElementById('total-chicken').innerText = totalChickens;
-
-    playWowSound(); 
-    triggerEffect('wow-effect', 'show-wow'); 
-}
+                    else if (level === 7) { 
+                        // ✅ 이 밑은 치킨 + 치킨 = 잭팟(+3) 로직
+                        World.remove(world, bodyA); World.remove(world, bodyB); 
+                        playClearSound(); triggerEffect('clear-effect', 'show-clear'); 
+                        startGoldenRain(); triggerJackpotMagnet();
+                    }
                 }
             }
         });
