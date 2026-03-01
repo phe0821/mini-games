@@ -413,7 +413,6 @@
         let currentShopTab = 'booster'; 
         let isShopOpen = false;
 
-        // 💡 수정됨: 환경 스킨 토글 로직 완벽 적용 (body class 교체)
         function applySkins() {
             const collection = Array.isArray(shopData.equipped.collection) ? shopData.equipped.collection : [];
             SNACKS[3].img = "mandu.png"; SNACKS[4].img = "fish.png";
@@ -443,9 +442,7 @@
             }
 
             const environment = shopData.equipped.environment;
-            // 기존 테마 클래스 싹 날리기
             document.body.classList.remove('night-mode', 'summer-mode');
-            // 장착된 테마가 있으면 해당 클래스 부여
             if (environment === 'night') { document.body.classList.add('night-mode'); } 
             else if (environment === 'summer') { document.body.classList.add('summer-mode'); }
         }
@@ -487,7 +484,6 @@
         let audioCtx = null; let isMuted = false;
         function initAudio() { if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)(); if (audioCtx.state === 'suspended') audioCtx.resume(); }
 
-        // 💡 수정됨: 상점에 '여름날 툇마루' 스킨 추가!
         const SHOP_ITEMS = {
             booster: [
                 { id: 'bomb_1', name: '흔들기 1개', price: 3, desc: '1회용 위기 탈출<br>상자 흔들기', img: 'css-box', amount: 1 },
@@ -503,7 +499,7 @@
                 { id: 'rainbow', name: '무지개 만두', price: 8, desc: '영롱한 빛깔의<br>무지개 스킨', img: 'rainbow_mandu.png' } 
             ],
             environment: [
-                { id: 'summer', name: '여름날 툇마루', price: 10, desc: '편안하고 밝은<br>그린 테마', img: 'green.png' },
+                { id: 'summer', name: '여름날 툇마루', price: 10, desc: '편안하고 밝은<br>그린 테마', img: 'css-box-summer' },
                 { id: 'night', name: '심야 포장마차', price: 10, desc: '차분하고 어두운<br>네이비 테마', img: 'tent.png' }
             ]
         };
@@ -512,15 +508,12 @@
             document.getElementById('shop-wallet-count').innerText = totalChickens;
             const shopBombEl = document.getElementById('shop-bomb-count');
             if(shopBombEl) shopBombEl.innerText = bombCount;
-
             const container = document.getElementById('shop-content');
             container.innerHTML = '';
             
             SHOP_ITEMS[currentShopTab].forEach(item => {
                 let btnHtml = '';
                 let imgHtml = '';
-
-                // 썸네일 아이콘 분기 처리
                 if (item.img === 'css-box') {
                     imgHtml = `<div class="css-3d-box"><div class="face front"></div><div class="face back"></div><div class="face right"></div><div class="face left"></div><div class="face top"></div><div class="face bottom"></div></div>`;
                 } else if (item.img === 'css-box-summer') {
@@ -533,10 +526,7 @@
                     btnHtml = `<button class="shop-item-btn btn-buy" onclick="buyBooster(${item.price}, ${item.amount})">🍗 ${item.price} 구매</button>`;
                 } else {
                     const isOwned = shopData.owned.includes(item.id);
-                    const isEquipped = Array.isArray(shopData.equipped[currentShopTab]) 
-                        ? shopData.equipped[currentShopTab].includes(item.id) 
-                        : shopData.equipped[currentShopTab] === item.id;
-                    
+                    const isEquipped = Array.isArray(shopData.equipped[currentShopTab]) ? shopData.equipped[currentShopTab].includes(item.id) : shopData.equipped[currentShopTab] === item.id;
                     if (isEquipped) { btnHtml = `<button class="shop-item-btn btn-equipped" style="cursor: pointer;" onclick="unequipItem('${currentShopTab}', '${item.id}')">장착 해제</button>`; } 
                     else if (isOwned) { btnHtml = `<button class="shop-item-btn btn-equip" onclick="equipItem('${currentShopTab}', '${item.id}')">장착하기</button>`; } 
                     else { btnHtml = `<button class="shop-item-btn btn-buy" onclick="buyItem('${item.id}', '${currentShopTab}', ${item.price})">🍗 ${item.price} 구매</button>`; } 
@@ -544,9 +534,7 @@
 
                 container.innerHTML += `
                     <div class="shop-item">
-                        <div class="shop-item-img-wrapper">
-                            ${imgHtml}
-                        </div>
+                        <div class="shop-item-img-wrapper">${imgHtml}</div>
                         <div class="shop-item-info">
                             <div class="shop-item-name">${item.name}</div>
                             <div class="shop-item-desc">${item.desc}</div>
@@ -562,31 +550,24 @@
             if (totalChickens >= price) {
                 totalChickens -= price;
                 bombCount += amount;
-                if(bombCount > 99) bombCount = 99; 
-                
+                updateBombUI(); 
                 document.getElementById('total-chicken').innerText = totalChickens;
                 localStorage.setItem('kSnackTotalChickens', totalChickens);
-                
-                updateBombUI(); playGoodSound(); renderShopItems(); 
+                playGoodSound(); renderShopItems(); 
             } else { alert('금고에 치킨이 부족합니다! 🍗'); }
         };
 
         function updateBombUI() {
             localStorage.setItem('kSnackBombCount', bombCount);
-            const bombBtn = document.getElementById('bomb-btn');
             document.getElementById('bomb-count').innerText = bombCount;
-            
-            const shopBombEl = document.getElementById('shop-bomb-count');
-            if(shopBombEl) shopBombEl.innerText = bombCount;
-            
+            const bombBtn = document.getElementById('bomb-btn');
             if(bombCount <= 0 || isQuaking) { bombBtn.classList.add('disabled'); } 
             else { bombBtn.classList.remove('disabled'); }
         }
 
         window.useBomb = function() {
             initAudio();
-            if(isDropping || isShopOpen) return;
-            if(bombCount <= 0 || isQuaking) return; 
+            if(isDropping || isShopOpen || bombCount <= 0 || isQuaking) return; 
             bombCount--; updateBombUI(); triggerEarthquake();
         }
 
@@ -596,10 +577,8 @@
                 totalChickens -= price;
                 document.getElementById('total-chicken').innerText = totalChickens;
                 localStorage.setItem('kSnackTotalChickens', totalChickens);
-                
                 shopData.owned.push(id);
                 localStorage.setItem('kSnackOwned', JSON.stringify(shopData.owned));
-                
                 playGoodSound(); renderShopItems();
             } else { alert('금고에 치킨이 부족합니다! 🍗'); }
         };
@@ -610,10 +589,8 @@
                 if (!Array.isArray(shopData.equipped[category])) shopData.equipped[category] = [];
                 if (!shopData.equipped[category].includes(id)) shopData.equipped[category].push(id);
             } else { shopData.equipped[category] = id; }
-            
             localStorage.setItem('kSnackEquipped', JSON.stringify(shopData.equipped));
-            playTone(300, 'sine', audioCtx.currentTime, 0.1, 0.1);
-            applySkins(); renderShopItems();
+            playTone(300, 'sine', audioCtx.currentTime, 0.1, 0.1); applySkins(); renderShopItems();
         };
 
         window.unequipItem = function(category, id) {
@@ -623,10 +600,8 @@
                     shopData.equipped[category] = shopData.equipped[category].filter(itemId => itemId !== id);
                 }
             } else { shopData.equipped[category] = null; }
-            
             localStorage.setItem('kSnackEquipped', JSON.stringify(shopData.equipped));
-            playTone(300, 'sine', audioCtx.currentTime, 0.1, 0.1); 
-            applySkins(); renderShopItems();
+            playTone(300, 'sine', audioCtx.currentTime, 0.1, 0.1); applySkins(); renderShopItems();
         };        
 
         document.querySelectorAll('.shop-tab').forEach(tab => {
@@ -639,7 +614,6 @@
         });
 
         let engineRunner = Runner.create(); 
-
         document.getElementById('shop-btn').addEventListener('click', () => {
             initAudio(); isShopOpen = true; Runner.stop(engineRunner); 
             document.getElementById('shop-modal').classList.remove('hidden'); renderShopItems();
@@ -647,18 +621,13 @@
 
         document.getElementById('close-shop-btn').addEventListener('click', () => {
             isShopOpen = false; document.getElementById('shop-modal').classList.add('hidden');
-            const growth = Array.isArray(shopData.equipped.growth) ? shopData.equipped.growth : [];
-            const hasBung = growth.includes('bungeoppang'); const hasMandu = growth.includes('wangmandu');
-            let isValidCurrent = true; if (currentDroppingIndex === 4 && !hasBung) isValidCurrent = false;  if (currentDroppingIndex === 3 && !hasMandu) isValidCurrent = false; 
-            let isValidUpcoming = true; if (upcomingSnackIndex === 4 && !hasBung) isValidUpcoming = false; if (upcomingSnackIndex === 3 && !hasMandu) isValidUpcoming = false;
-            if (!isValidCurrent) currentDroppingIndex = getRandomSnackIndex(); if (!isValidUpcoming) upcomingSnackIndex = getRandomSnackIndex();
-            document.getElementById('next-snack-img').src = SNACKS[upcomingSnackIndex].img; Runner.start(engineRunner, engine); 
+            Runner.start(engineRunner, engine); 
         });
 
         function triggerEarthquake() {
             isQuaking = true; updateBombUI(); 
             const toast = document.getElementById('earthquake-toast'); toast.classList.remove('hidden');
-            const safetyOptions = { isStatic: true, friction: 0, restitution: 0, label: 'SafetyNet' };
+            const safetyOptions = { isStatic: true, label: 'SafetyNet' };
             const safetyNet = [ Bodies.rectangle(10, -200, 20, 1000, safetyOptions), Bodies.rectangle(350, -200, 20, 1000, safetyOptions), Bodies.rectangle(180, -800, 400, 50, safetyOptions) ];
             World.add(world, safetyNet); 
 
@@ -681,7 +650,6 @@
                             body.frictionAir = 0.025 - (level * 0.003);
                         }
                     });
-
                     setTimeout(() => {
                         Composite.allBodies(world).forEach(body => { if (body.label !== 'Wall' && body.label !== 'SafetyNet') body.frictionAir = 0.001; });
                         World.remove(world, safetyNet); isQuaking = false; updateBombUI(); 
@@ -690,7 +658,6 @@
             }, 500);
         }
 
-        // 사운드 함수들 생략 없이 그대로 유지
         function playTone(freq, type, startTime, duration, vol = 0.2) { const osc = audioCtx.createOscillator(); const gain = audioCtx.createGain(); osc.type = type; osc.connect(gain); gain.connect(audioCtx.destination); osc.frequency.value = freq; gain.gain.setValueAtTime(0, startTime); gain.gain.linearRampToValueAtTime(vol, startTime + 0.02); gain.gain.exponentialRampToValueAtTime(0.01, startTime + duration); osc.start(startTime); osc.stop(startTime + duration); }
         function playSnap(startTime, freq = 300) { const osc = audioCtx.createOscillator(); const gain = audioCtx.createGain(); osc.type = 'triangle'; osc.connect(gain); gain.connect(audioCtx.destination); osc.frequency.setValueAtTime(freq * 1.5, startTime); osc.frequency.exponentialRampToValueAtTime(freq / 2, startTime + 0.03); gain.gain.setValueAtTime(0, startTime); gain.gain.linearRampToValueAtTime(0.5, startTime + 0.002); gain.gain.exponentialRampToValueAtTime(0.01, startTime + 0.04); osc.start(startTime); osc.stop(startTime + 0.04); }
         function playDropSound() { if (isMuted || !audioCtx) return; const osc = audioCtx.createOscillator(); const gain = audioCtx.createGain(); osc.type = 'sine'; osc.connect(gain); gain.connect(audioCtx.destination); osc.frequency.setValueAtTime(600, audioCtx.currentTime); osc.frequency.exponentialRampToValueAtTime(300, audioCtx.currentTime + 0.1); gain.gain.setValueAtTime(0.3, audioCtx.currentTime); gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.1); osc.start(); osc.stop(audioCtx.currentTime + 0.1); }
@@ -698,86 +665,60 @@
         function playGoodSound() { if (isMuted || !audioCtx) return; const now = audioCtx.currentTime; const notes = [261.63, 329.63, 392.00]; notes.forEach((freq, i) => { const t = now + (i * 0.06); playSnap(t, freq); playTone(freq, 'sine', t, 0.6, 0.25); }); }
         function playGreatSound() { if (isMuted || !audioCtx) return; const now = audioCtx.currentTime; const notes = [261.63, 329.63, 392.00, 523.25]; notes.forEach((freq, i) => { const t = now + (i * 0.08); const mainOsc = audioCtx.createOscillator(); const mainGain = audioCtx.createGain(); mainOsc.type = 'sine'; mainOsc.connect(mainGain); mainGain.connect(audioCtx.destination); mainOsc.frequency.setValueAtTime(freq, t); mainGain.gain.setValueAtTime(0, t); mainGain.gain.linearRampToValueAtTime(0.2, t + 0.02); mainGain.gain.exponentialRampToValueAtTime(0.01, t + 0.8); mainOsc.start(t); mainOsc.stop(t + 0.8); }); }
         function playWowSound() { if (isMuted || !audioCtx) return; const now = audioCtx.currentTime; const notes = [329.63, 392.00, 523.25, 587.33, 783.99]; notes.forEach((freq, i) => { const t = now + (i * 0.06); const mainOsc = audioCtx.createOscillator(); const mainGain = audioCtx.createGain(); mainOsc.type = 'triangle'; mainOsc.connect(mainGain); mainGain.connect(audioCtx.destination); mainOsc.frequency.setValueAtTime(freq, t); mainGain.gain.setValueAtTime(0, t); mainGain.gain.linearRampToValueAtTime(0.25, t + 0.02); mainGain.gain.exponentialRampToValueAtTime(0.01, t + 1.2); mainOsc.start(t); mainOsc.stop(t + 1.2); }); }
-        function playClearSound() { if (isMuted || !audioCtx) return; const now = audioCtx.currentTime; for (let i = 0; i < 30; i++) { const popTime = now + (Math.random() * 1.45); const popOsc = audioCtx.createOscillator(); const popGain = audioCtx.createGain(); popOsc.type = 'sine'; popOsc.connect(popGain); popGain.connect(audioCtx.destination); const startFreq = 400 + Math.random() * 300; popOsc.frequency.setValueAtTime(startFreq, popTime); popOsc.frequency.exponentialRampToValueAtTime(startFreq * 0.5, popTime + 0.05); popGain.gain.setValueAtTime(0, popTime); popGain.gain.linearRampToValueAtTime(0.15 + Math.random() * 0.1, popTime + 0.01); popGain.gain.exponentialRampToValueAtTime(0.01, popTime + 0.06); popOsc.start(popTime); popOsc.stop(popTime + 0.06); const snapOsc = audioCtx.createOscillator(); const snapGain = audioCtx.createGain(); snapOsc.type = 'triangle'; snapOsc.connect(snapGain); snapGain.connect(audioCtx.destination); snapOsc.frequency.setValueAtTime(800 + Math.random() * 500, popTime); snapGain.gain.setValueAtTime(0.05, popTime); snapGain.gain.exponentialRampToValueAtTime(0.001, popTime + 0.02); snapOsc.start(popTime); snapOsc.stop(popTime + 0.02); } const clearNotes = [261.63, 392.00, 523.25, 659.25, 783.99, 1046.50]; clearNotes.forEach((freq, i) => { const t = now + (i * 0.05); const chordOsc = audioCtx.createOscillator(); const chordGain = audioCtx.createGain(); chordOsc.type = 'triangle'; chordOsc.connect(chordGain); chordGain.connect(audioCtx.destination); chordOsc.frequency.setValueAtTime(freq, t); chordGain.gain.setValueAtTime(0, t); chordGain.gain.linearRampToValueAtTime(0.3, t + 0.02); chordGain.gain.exponentialRampToValueAtTime(0.01, t + 1.5); chordOsc.start(t); chordOsc.stop(t + 1.5); }); }
+        function playClearSound() { if (isMuted || !audioCtx) return; const now = audioCtx.currentTime; for (let i = 0; i < 30; i++) { const popTime = now + (Math.random() * 1.45); const popOsc = audioCtx.createOscillator(); const popGain = audioCtx.createGain(); popOsc.type = 'sine'; popOsc.connect(popGain); popGain.connect(audioCtx.destination); const startFreq = 400 + Math.random() * 300; popOsc.frequency.setValueAtTime(startFreq, popTime); popOsc.frequency.exponentialRampToValueAtTime(startFreq * 0.5, popTime + 0.05); popGain.gain.setValueAtTime(0, popTime); popGain.gain.linearRampToValueAtTime(0.15 + Math.random() * 0.1, popTime + 0.01); popGain.gain.exponentialRampToValueAtTime(0.01, popTime + 0.06); popOsc.start(popTime); popOsc.stop(popTime + 0.06); } }
         function playCoinSound(index) { if (isMuted || !audioCtx) return; const now = audioCtx.currentTime; const freqs = [880, 987.77, 1046.50]; const targetFreq = freqs[index] || 1046.50; const osc = audioCtx.createOscillator(); const gain = audioCtx.createGain(); osc.type = 'sine'; osc.connect(gain); gain.connect(audioCtx.destination); osc.frequency.setValueAtTime(targetFreq, now); osc.frequency.exponentialRampToValueAtTime(targetFreq * 1.5, now + 0.1); gain.gain.setValueAtTime(0, now); gain.gain.linearRampToValueAtTime(0.3, now + 0.01); gain.gain.exponentialRampToValueAtTime(0.01, now + 0.15); osc.start(now); osc.stop(now + 0.15); }
-        function playRumbleSound(duration) { if (isMuted || !audioCtx) return; const osc = audioCtx.createOscillator(); const gain = audioCtx.createGain(); osc.type = 'sawtooth'; osc.connect(gain); gain.connect(audioCtx.destination); osc.frequency.setValueAtTime(40, audioCtx.currentTime); osc.frequency.linearRampToValueAtTime(50, audioCtx.currentTime + duration / 2); osc.frequency.linearRampToValueAtTime(40, audioCtx.currentTime + duration); gain.gain.setValueAtTime(0, audioCtx.currentTime); gain.gain.linearRampToValueAtTime(0.04, audioCtx.currentTime + 0.2); gain.gain.setValueAtTime(0.04, audioCtx.currentTime + duration - 0.2); gain.gain.linearRampToValueAtTime(0, audioCtx.currentTime + duration); osc.start(audioCtx.currentTime); osc.stop(audioCtx.currentTime + duration); }
-        function playLaunchSound() { if (isMuted || !audioCtx) return; const now = audioCtx.currentTime; const boomOsc = audioCtx.createOscillator(); const boomGain = audioCtx.createGain(); boomOsc.type = 'triangle'; boomOsc.connect(boomGain); boomGain.connect(audioCtx.destination); boomOsc.frequency.setValueAtTime(300, now); boomOsc.frequency.exponentialRampToValueAtTime(30, now + 0.2); boomGain.gain.setValueAtTime(0, now); boomGain.gain.linearRampToValueAtTime(0.12, now + 0.02); boomGain.gain.exponentialRampToValueAtTime(0.001, now + 0.6); boomOsc.start(now); boomOsc.stop(now + 0.6); const snapOsc = audioCtx.createOscillator(); const snapGain = audioCtx.createGain(); snapOsc.type = 'sawtooth'; snapOsc.connect(snapGain); snapGain.connect(audioCtx.destination); snapOsc.frequency.setValueAtTime(600, now); snapOsc.frequency.exponentialRampToValueAtTime(50, now + 0.15); snapGain.gain.setValueAtTime(0, now); snapGain.gain.linearRampToValueAtTime(0.08, now + 0.01); snapGain.gain.exponentialRampToValueAtTime(0.001, now + 0.3); snapOsc.start(now); snapOsc.stop(now + 0.3); }
+        function playRumbleSound(duration) { if (isMuted || !audioCtx) return; const osc = audioCtx.createOscillator(); const gain = audioCtx.createGain(); osc.type = 'sawtooth'; osc.connect(gain); gain.connect(audioCtx.destination); osc.frequency.setValueAtTime(40, audioCtx.currentTime); gain.gain.setValueAtTime(0, audioCtx.currentTime); gain.gain.linearRampToValueAtTime(0.04, audioCtx.currentTime + 0.2); osc.start(audioCtx.currentTime); osc.stop(audioCtx.currentTime + duration); }
+        function playLaunchSound() { if (isMuted || !audioCtx) return; const now = audioCtx.currentTime; const boomOsc = audioCtx.createOscillator(); const boomGain = audioCtx.createGain(); boomOsc.type = 'triangle'; boomOsc.connect(boomGain); boomGain.connect(audioCtx.destination); boomOsc.frequency.setValueAtTime(300, now); boomOsc.frequency.exponentialRampToValueAtTime(30, now + 0.2); boomGain.gain.setValueAtTime(0, now); boomGain.gain.linearRampToValueAtTime(0.12, now + 0.02); boomGain.gain.exponentialRampToValueAtTime(0.001, now + 0.6); boomOsc.start(now); boomOsc.stop(now + 0.6); }
         function playFallSound() { if (isMuted || !audioCtx) return; const now = audioCtx.currentTime; const osc = audioCtx.createOscillator(); const gain = audioCtx.createGain(); osc.type = 'sine'; osc.connect(gain); gain.connect(audioCtx.destination); osc.frequency.setValueAtTime(150, now); osc.frequency.exponentialRampToValueAtTime(30, now + 0.15); gain.gain.setValueAtTime(0, now); gain.gain.linearRampToValueAtTime(0.10, now + 0.02); gain.gain.exponentialRampToValueAtTime(0.001, now + 0.3); osc.start(now); osc.stop(now + 0.3); }
 
         document.getElementById('mute-btn').addEventListener('click', (e) => { isMuted = !isMuted; e.target.innerText = isMuted ? '🔇 소리 꺼짐' : '🔊 소리 켜짐'; });
-        
-        document.getElementById('restart-btn').addEventListener('click', () => {
-            Composite.allBodies(world).forEach(body => { if (body.label !== 'Wall') World.remove(world, body); });
-            currentDroppingIndex = getRandomSnackIndex(); upcomingSnackIndex = getRandomSnackIndex(); 
-            document.getElementById('next-snack-img').src = SNACKS[upcomingSnackIndex].img; isDropping = false;
-        });
+        document.getElementById('restart-btn').addEventListener('click', () => { Composite.allBodies(world).forEach(body => { if (body.label !== 'Wall') World.remove(world, body); }); currentDroppingIndex = getRandomSnackIndex(); upcomingSnackIndex = getRandomSnackIndex(); document.getElementById('next-snack-img').src = SNACKS[upcomingSnackIndex].img; isDropping = false; });
 
-        function createSnack(x, y, level) {
-            const baseDensity = 0.001; const snackDensity = baseDensity * Math.pow(1.2, level);
-            const body = Bodies.circle(x, y, SNACKS[level].radius, { restitution: 0.3, friction: 0.005, density: snackDensity, label: level.toString() });
-            World.add(world, body); return body;
-        }
-
+        function createSnack(x, y, level) { const baseDensity = 0.001; const snackDensity = baseDensity * Math.pow(1.2, level); const body = Bodies.circle(x, y, SNACKS[level].radius, { restitution: 0.3, friction: 0.005, density: snackDensity, label: level.toString() }); World.add(world, body); return body; }
         function triggerEffect(id, className) { const el = document.getElementById(id); el.classList.remove(className); void el.offsetWidth; el.classList.add(className); }
 
-        function startGoldenRain() {
-            isRaining = true; goldenRainParticles = [];
-            for(let i=0; i<60; i++) {
-                goldenRainParticles.push({
-                    x: Math.random() * canvas.width, y: Math.random() * -600,
-                    speed: 2 + Math.random() * 4, size: 3 + Math.random() * 4,
-                    wobble: Math.random() * Math.PI * 2, wobbleSpeed: 0.02 + Math.random() * 0.05
-                });
-            }
-            setTimeout(() => { isRaining = false; }, 3500);
-        }
+        function startGoldenRain() { isRaining = true; goldenRainParticles = []; for(let i=0; i<60; i++) { goldenRainParticles.push({ x: Math.random() * canvas.width, y: Math.random() * -600, speed: 2 + Math.random() * 4, size: 3 + Math.random() * 4, wobble: Math.random() * Math.PI * 2, wobbleSpeed: 0.02 + Math.random() * 0.05 }); } setTimeout(() => { isRaining = false; }, 3500); }
 
         function triggerJackpotMagnet() {
             const jackpotEl = document.getElementById('jackpot-text'); const walletBadge = document.getElementById('wallet-badge');
             jackpotEl.style.transition = ''; jackpotEl.style.top = '55%'; jackpotEl.style.left = '50%'; jackpotEl.style.transform = 'translate(-50%, -50%) scale(0.1)'; jackpotEl.style.opacity = '0';
-            
             setTimeout(() => { jackpotEl.classList.remove('show-jackpot'); void jackpotEl.offsetWidth; jackpotEl.classList.add('show-jackpot'); }, 400);
-
             setTimeout(() => {
                 jackpotEl.classList.remove('show-jackpot'); jackpotEl.style.transform = 'translate(-50%, -52%) scale(1)'; jackpotEl.style.opacity = '1'; void jackpotEl.offsetWidth;
                 const rect = walletBadge.getBoundingClientRect(); const targetX = rect.left + rect.width / 2; const targetY = rect.top + rect.height / 2;
-                
                 jackpotEl.style.transition = 'all 0.5s cubic-bezier(0.55, 0.055, 0.675, 0.19)'; 
                 jackpotEl.style.top = targetY + 'px'; jackpotEl.style.left = targetX + 'px'; jackpotEl.style.transform = 'translate(-50%, -50%) scale(0.0)'; jackpotEl.style.opacity = '0';
             }, 2500 + 400); 
-
             setTimeout(() => {
                 jackpotEl.style.transition = ''; jackpotEl.style.top = '55%'; jackpotEl.style.left = '50%';
-                let count = 0;
-                const coinInterval = setInterval(() => {
-                    totalChickens++; localStorage.setItem('kSnackTotalChickens', totalChickens); document.getElementById('total-chicken').innerText = totalChickens;
-                    playCoinSound(count);
-                    walletBadge.classList.remove('pump'); void walletBadge.offsetWidth; walletBadge.classList.add('pump');
-                    count++;
-                    if(count >= 3) { clearInterval(coinInterval); setTimeout(() => walletBadge.classList.remove('pump'), 200); }
-                }, 150); 
+                let count = 0; const coinInterval = setInterval(() => { totalChickens++; document.getElementById('total-chicken').innerText = totalChickens; localStorage.setItem('kSnackTotalChickens', totalChickens); playCoinSound(count); walletBadge.classList.remove('pump'); void walletBadge.offsetWidth; walletBadge.classList.add('pump'); count++; if(count >= 3) { clearInterval(coinInterval); setTimeout(() => walletBadge.classList.remove('pump'), 200); } }, 150); 
             }, 3000 + 400); 
         }
 
+        // [충돌 이벤트 - 버그 수정 로직]
         Events.on(engine, 'collisionStart', (event) => {
             const pairs = event.pairs;
             for (let i = 0; i < pairs.length; i++) {
                 const bodyA = pairs[i].bodyA; const bodyB = pairs[i].bodyB;
                 if (bodyA.isMerging || bodyB.isMerging) continue;
-
                 if (bodyA.label === bodyB.label && bodyA.label !== 'Wall') {
                     bodyA.isMerging = true; bodyB.isMerging = true;
                     let level = parseInt(bodyA.label);
                     const newX = (bodyA.position.x + bodyB.position.x) / 2; const newY = (bodyA.position.y + bodyB.position.y) / 2;
-
                     if (level < SNACKS.length - 1) {
                         World.remove(world, bodyA); World.remove(world, bodyB);
                         const nextLevel = level + 1; const newSnack = createSnack(newX, newY, nextLevel); 
                         Matter.Body.setVelocity(newSnack, { x: (Math.random() - 0.5) * 2, y: -4 });
 
-                        if (nextLevel === 5) { playGoodSound(); triggerEffect('good-effect', 'show-good'); } 
+                        // 💡 버그 수정 포인트: 솜사탕(Level 6) 2개가 합쳐져 치킨(Level 7)이 될 때 +1마리 지급
+                        if (nextLevel === 7) {
+                            totalChickens++; // +1마리 추가
+                            document.getElementById('total-chicken').innerText = totalChickens;
+                            localStorage.setItem('kSnackTotalChickens', totalChickens);
+                            playWowSound(); 
+                            triggerEffect('wow-effect', 'show-wow');
+                        } else if (nextLevel === 5) { playGoodSound(); triggerEffect('good-effect', 'show-good'); } 
                         else if (nextLevel === 6) { playGreatSound(); triggerEffect('great-effect', 'show-great'); } 
-                        else if (nextLevel === 7) { playWowSound(); triggerEffect('wow-effect', 'show-wow'); } 
                         else { playMergeSound(nextLevel); }
                     } 
                     else if (level === 7) { 
@@ -789,137 +730,37 @@
             }
         });
 
-        // 💡 수정됨: 환경 테마에 따라 Canvas 안쪽 렌더링을 완전히 분기 처리
         function renderLoop() {
             if (!isShopOpen) {
                 ctx.clearRect(0, 0, canvas.width, canvas.height); frameCount++;
-                
                 const isNight = document.body.classList.contains('night-mode');
                 const isSummer = document.body.classList.contains('summer-mode');
-                
-                let innerColor, outerColor;
-                let backWallGrad0, backWallGrad1;
-                let sideGrad0, sideGrad1;
-                let botGrad0, botGrad1;
-
-                // 1. 테마별 컬러 변수 셋팅
-                if (isNight) {
-                    innerColor = "rgba(220, 40, 40, 0.6)"; outerColor = "rgb(220, 40, 40)";
-                    backWallGrad0 = "rgba(255, 255, 255, 0.1)"; backWallGrad1 = "rgba(255, 255, 255, 0)";
-                    sideGrad0 = "rgba(200, 220, 255, 0.1)"; sideGrad1 = "rgba(50, 70, 100, 0.4)";
-                    botGrad0 = "rgba(50, 70, 100, 0.8)"; botGrad1 = "rgba(20, 30, 50, 0.2)";
-                } else if (isSummer) {
-                    innerColor = "rgba(141, 110, 99, 0.6)"; outerColor = "rgb(78, 52, 46)";
-                    backWallGrad0 = "rgba(255, 236, 179, 0.8)"; backWallGrad1 = "rgba(255, 204, 128, 0.4)";
-                    sideGrad0 = "rgba(255, 236, 179, 0.6)"; sideGrad1 = "rgba(141, 110, 99, 0.3)";
-                    botGrad0 = "rgba(141, 110, 99, 0.5)"; botGrad1 = "rgba(78, 52, 46, 0.2)";
-                } else {
-                    // 기본 테마
-                    innerColor = "rgba(255, 177, 66, 0.6)"; outerColor = "rgb(255, 177, 66)";
-                    backWallGrad0 = "rgba(255, 255, 255, 0.45)"; backWallGrad1 = "rgba(255, 255, 255, 0)";
-                    sideGrad0 = "rgba(255, 255, 255, 0.6)"; sideGrad1 = "rgba(200, 180, 160, 0.2)";
-                    botGrad0 = "rgba(100, 80, 60, 0.4)"; botGrad1 = "rgba(160, 140, 120, 0.1)";
-                }
-                
-                // 2. 백그라운드 렌더링
-                const gradientTop = ctx.createLinearGradient(0, fy_top, 0, by_top);
-                gradientTop.addColorStop(0, backWallGrad0); gradientTop.addColorStop(1, backWallGrad1);
-                ctx.fillStyle = gradientTop; ctx.fillRect(bx1, by_top, bx2 - bx1, fy_top - by_top);
-
-                // 💡 여름 테마 전용 돗자리 렌더링 (가로줄 패턴)
-                if (isSummer) {
-                    ctx.strokeStyle = "rgba(141, 110, 99, 0.15)";
-                    ctx.lineWidth = 1.5;
-                    for(let y = by_top; y < fy_bot; y += 8) {
-                        ctx.beginPath(); ctx.moveTo(bx1, Math.max(by_top, y)); ctx.lineTo(bx2, Math.max(by_top, y)); ctx.stroke();
-                    }
-                }
-
-                const sideGradient = ctx.createLinearGradient(fx1, fy_top, bx1, by_top); 
-                sideGradient.addColorStop(0, sideGrad0); sideGradient.addColorStop(1, sideGrad1); 
-                ctx.fillStyle = sideGradient;
-                ctx.beginPath(); ctx.moveTo(fx1, fy_top); ctx.lineTo(bx1, by_top); ctx.lineTo(bx1, by_bot); ctx.lineTo(fx1, fy_bot); ctx.fill(); 
-                
-                const sideGradientRight = ctx.createLinearGradient(fx2, fy_top, bx2, by_top); 
-                sideGradientRight.addColorStop(0, sideGrad0); sideGradientRight.addColorStop(1, sideGrad1); 
-                ctx.fillStyle = sideGradientRight;
-                ctx.beginPath(); ctx.moveTo(fx2, fy_top); ctx.lineTo(bx2, by_top); ctx.lineTo(bx2, by_bot); ctx.lineTo(fx2, fy_bot); ctx.fill(); 
-                
-                const bottomGradient = ctx.createRadialGradient(canvas.width/2, fy_bot, 50, canvas.width/2, fy_bot, 200); 
-                bottomGradient.addColorStop(0, botGrad0); bottomGradient.addColorStop(1, botGrad1); 
-                ctx.fillStyle = bottomGradient;
-                ctx.beginPath(); ctx.moveTo(fx1, fy_bot); ctx.lineTo(bx1, by_bot); ctx.lineTo(bx2, by_bot); ctx.lineTo(fx2, fy_bot); ctx.fill();
-
-                // 3. 테두리(Wireframe) 렌더링
-                ctx.strokeStyle = innerColor; 
-                ctx.lineWidth = 2; ctx.lineJoin = "round"; 
-                ctx.strokeRect(bx1, by_top, bx2 - bx1, by_bot - by_top); 
-                ctx.beginPath(); ctx.moveTo(fx1, fy_top); ctx.lineTo(bx1, by_top); ctx.stroke(); ctx.beginPath(); ctx.moveTo(fx2, fy_top); ctx.lineTo(bx2, by_top); ctx.stroke(); ctx.beginPath(); ctx.moveTo(fx1, fy_bot); ctx.lineTo(bx1, by_bot); ctx.stroke(); ctx.beginPath(); ctx.moveTo(fx2, fy_bot); ctx.lineTo(bx2, by_bot); ctx.stroke();
-                
-                ctx.strokeStyle = outerColor; 
-                ctx.lineWidth = 5; 
-                ctx.beginPath(); ctx.moveTo(fx1, fy_top); ctx.lineTo(fx2, fy_top); ctx.lineTo(bx2, by_top); ctx.lineTo(bx1, by_top); ctx.closePath(); ctx.stroke();
-
-                if (!isDropping) {
-                    const r = SNACKS[currentDroppingIndex].radius; const safeX = Math.max(r + 20, Math.min(previewX, canvas.width - r - 20));
-                    ctx.beginPath(); ctx.setLineDash([6, 5]); ctx.moveTo(safeX, dropY + r); ctx.lineTo(safeX, fy_bot);
-                    ctx.strokeStyle = 'rgba(255, 120, 0, 0.9)'; ctx.lineWidth = 2.5; ctx.stroke(); ctx.setLineDash([]); 
-                    ctx.globalAlpha = 0.8; let bob = Math.sin(frameCount * 0.1) * 3; const img = loadedImages[currentDroppingIndex]; if (img && img.complete) { ctx.drawImage(img, safeX - r, dropY - r + bob, r * 2, r * 2); } ctx.globalAlpha = 1.0;
-                }
-
-                const bodies = Matter.Composite.allBodies(world);
-                bodies.forEach(body => {
-                    if (body.label !== 'Wall' && body.label !== 'SafetyNet') { 
-                        const level = parseInt(body.label); const img = loadedImages[level]; const r = SNACKS[level].radius; const visualR = r * 1.35; 
-                        ctx.save(); 
-                        if (body.position.y > fy_top && body.position.x > fx1 && body.position.x < fx2) {
-                            ctx.beginPath(); ctx.rect(fx1, 0, fx2 - fx1, fy_bot); ctx.clip();
-                        }
-                        ctx.translate(body.position.x, body.position.y); ctx.rotate(body.angle);
-                        if (img && img.complete) { ctx.drawImage(img, -visualR, -visualR, visualR * 2, visualR * 2); }
-                        ctx.restore();
-                    }
-                });
-
-                if (goldenRainParticles.length > 0) {
-                    ctx.save();
-                    goldenRainParticles.forEach((p, index) => {
-                        if(isRaining) { p.y += p.speed; p.x += Math.sin(p.wobble) * 1.5; p.wobble += p.wobbleSpeed; } 
-                        else { p.y += p.speed * 1.5; p.opacity = Math.max(0, (canvas.height - p.y) / canvas.height); }
-
-                        if (p.y < canvas.height) {
-                            ctx.beginPath(); ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
-                            ctx.fillStyle = `rgba(255, 215, 0, ${p.opacity !== undefined ? p.opacity : 0.8})`;
-                            ctx.shadowBlur = 10; ctx.shadowColor = '#FF8E0D'; ctx.fill();
-                        } else if (!isRaining && p.y >= canvas.height) { goldenRainParticles.splice(index, 1); }
-                    });
-                    ctx.restore();
-                }
-
-                const frontGlass = ctx.createLinearGradient(fx1, fy_top, fx2, fy_bot); 
-                frontGlass.addColorStop(0, "rgba(255, 255, 255, 0.2)"); frontGlass.addColorStop(0.5, "rgba(255, 255, 255, 0.05)"); frontGlass.addColorStop(1, "rgba(255, 255, 255, 0.1)");
-                ctx.fillStyle = frontGlass; ctx.fillRect(fx1, fy_top, fx2 - fx1, fy_bot - fy_top);
-                ctx.strokeStyle = outerColor; ctx.lineWidth = 3; ctx.strokeRect(fx1, fy_top, fx2 - fx1, fy_bot - fy_top); 
+                let innerColor, outerColor, backWallGrad0, backWallGrad1, sideGrad0, sideGrad1, botGrad0, botGrad1;
+                if (isNight) { innerColor = "rgba(220, 40, 40, 0.6)"; outerColor = "rgb(220, 40, 40)"; backWallGrad0 = "rgba(255, 255, 255, 0.1)"; backWallGrad1 = "rgba(255, 255, 255, 0)"; sideGrad0 = "rgba(200, 220, 255, 0.1)"; sideGrad1 = "rgba(50, 70, 100, 0.4)"; botGrad0 = "rgba(50, 70, 100, 0.8)"; botGrad1 = "rgba(20, 30, 50, 0.2)"; } 
+                else if (isSummer) { innerColor = "rgba(141, 110, 99, 0.6)"; outerColor = "rgb(78, 52, 46)"; backWallGrad0 = "rgba(255, 236, 179, 0.8)"; backWallGrad1 = "rgba(255, 204, 128, 0.4)"; sideGrad0 = "rgba(255, 236, 179, 0.6)"; sideGrad1 = "rgba(141, 110, 99, 0.3)"; botGrad0 = "rgba(141, 110, 99, 0.5)"; botGrad1 = "rgba(78, 52, 46, 0.2)"; } 
+                else { innerColor = "rgba(255, 177, 66, 0.6)"; outerColor = "rgb(255, 177, 66)"; backWallGrad0 = "rgba(255, 255, 255, 0.45)"; backWallGrad1 = "rgba(255, 255, 255, 0)"; sideGrad0 = "rgba(255, 255, 255, 0.6)"; sideGrad1 = "rgba(200, 180, 160, 0.2)"; botGrad0 = "rgba(100, 80, 60, 0.4)"; botGrad1 = "rgba(160, 140, 120, 0.1)"; }
+                const gradTop = ctx.createLinearGradient(0, fy_top, 0, by_top); gradTop.addColorStop(0, backWallGrad0); gradTop.addColorStop(1, backWallGrad1); ctx.fillStyle = gradTop; ctx.fillRect(bx1, by_top, bx2 - bx1, fy_top - by_top);
+                if (isSummer) { ctx.strokeStyle = "rgba(141, 110, 99, 0.15)"; ctx.lineWidth = 1.5; for(let y = by_top; y < fy_bot; y += 8) { ctx.beginPath(); ctx.moveTo(bx1, Math.max(by_top, y)); ctx.lineTo(bx2, Math.max(by_top, y)); ctx.stroke(); } }
+                const sGrad = ctx.createLinearGradient(fx1, fy_top, bx1, by_top); sGrad.addColorStop(0, sideGrad0); sGrad.addColorStop(1, sideGrad1); ctx.fillStyle = sGrad; ctx.beginPath(); ctx.moveTo(fx1, fy_top); ctx.lineTo(bx1, by_top); ctx.lineTo(bx1, by_bot); ctx.lineTo(fx1, fy_bot); ctx.fill(); 
+                const sGradR = ctx.createLinearGradient(fx2, fy_top, bx2, by_top); sGradR.addColorStop(0, sideGrad0); sGradR.addColorStop(1, sideGrad1); ctx.fillStyle = sGradR; ctx.beginPath(); ctx.moveTo(fx2, fy_top); ctx.lineTo(bx2, by_top); ctx.lineTo(bx2, by_bot); ctx.lineTo(fx2, fy_bot); ctx.fill(); 
+                const bGrad = ctx.createRadialGradient(canvas.width/2, fy_bot, 50, canvas.width/2, fy_bot, 200); bGrad.addColorStop(0, botGrad0); bGrad.addColorStop(1, botGrad1); ctx.fillStyle = bGrad; ctx.beginPath(); ctx.moveTo(fx1, fy_bot); ctx.lineTo(bx1, by_bot); ctx.lineTo(bx2, by_bot); ctx.lineTo(fx2, fy_bot); ctx.fill();
+                ctx.strokeStyle = innerColor; ctx.lineWidth = 2; ctx.lineJoin = "round"; ctx.strokeRect(bx1, by_top, bx2 - bx1, by_bot - by_top); ctx.beginPath(); ctx.moveTo(fx1, fy_top); ctx.lineTo(bx1, by_top); ctx.stroke(); ctx.beginPath(); ctx.moveTo(fx2, fy_top); ctx.lineTo(bx2, by_top); ctx.stroke(); ctx.beginPath(); ctx.moveTo(fx1, fy_bot); ctx.lineTo(bx1, by_bot); ctx.stroke(); ctx.beginPath(); ctx.moveTo(fx2, fy_bot); ctx.lineTo(bx2, by_bot); ctx.stroke();
+                ctx.strokeStyle = outerColor; ctx.lineWidth = 5; ctx.beginPath(); ctx.moveTo(fx1, fy_top); ctx.lineTo(fx2, fy_top); ctx.lineTo(bx2, by_top); ctx.lineTo(bx1, by_top); ctx.closePath(); ctx.stroke();
+                if (!isDropping) { const r = SNACKS[currentDroppingIndex].radius; const safeX = Math.max(r + 20, Math.min(previewX, canvas.width - r - 20)); ctx.beginPath(); ctx.setLineDash([6, 5]); ctx.moveTo(safeX, dropY + r); ctx.lineTo(safeX, fy_bot); ctx.strokeStyle = 'rgba(255, 120, 0, 0.9)'; ctx.lineWidth = 2.5; ctx.stroke(); ctx.setLineDash([]); ctx.globalAlpha = 0.8; let bob = Math.sin(frameCount * 0.1) * 3; const img = loadedImages[currentDroppingIndex]; if (img && img.complete) { ctx.drawImage(img, safeX - r, dropY - r + bob, r * 2, r * 2); } ctx.globalAlpha = 1.0; }
+                const bodies = Composite.allBodies(world); bodies.forEach(body => { if (body.label !== 'Wall' && body.label !== 'SafetyNet') { const level = parseInt(body.label); const img = loadedImages[level]; const r = SNACKS[level].radius; const vR = r * 1.35; ctx.save(); if (body.position.y > fy_top && body.position.x > fx1 && body.position.x < fx2) { ctx.beginPath(); ctx.rect(fx1, 0, fx2 - fx1, fy_bot); ctx.clip(); } ctx.translate(body.position.x, body.position.y); ctx.rotate(body.angle); if (img && img.complete) { ctx.drawImage(img, -vR, -vR, vR * 2, vR * 2); } ctx.restore(); } });
+                if (goldenRainParticles.length > 0) { ctx.save(); goldenRainParticles.forEach((p, index) => { if(isRaining) { p.y += p.speed; p.x += Math.sin(p.wobble) * 1.5; p.wobble += p.wobbleSpeed; } else { p.y += p.speed * 1.5; p.opacity = Math.max(0, (canvas.height - p.y) / canvas.height); } if (p.y < canvas.height) { ctx.beginPath(); ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2); ctx.fillStyle = `rgba(255, 215, 0, ${p.opacity !== undefined ? p.opacity : 0.8})`; ctx.shadowBlur = 10; ctx.shadowColor = '#FF8E0D'; ctx.fill(); } else if (!isRaining && p.y >= canvas.height) { goldenRainParticles.splice(index, 1); } }); ctx.restore(); }
+                const fG = ctx.createLinearGradient(fx1, fy_top, fx2, fy_bot); fG.addColorStop(0, "rgba(255, 255, 255, 0.2)"); fG.addColorStop(0.5, "rgba(255, 255, 255, 0.05)"); fG.addColorStop(1, "rgba(255, 255, 255, 0.1)"); ctx.fillStyle = fG; ctx.fillRect(fx1, fy_top, fx2 - fx1, fy_bot - fy_top); ctx.strokeStyle = outerColor; ctx.lineWidth = 3; ctx.strokeRect(fx1, fy_top, fx2 - fx1, fy_bot - fy_top); 
             }
             requestAnimationFrame(renderLoop);
         }
 
         function getPointerX(e) { const rect = canvas.getBoundingClientRect(); const clientX = e.touches ? e.touches[0].clientX : e.clientX; return (clientX - rect.left) * (canvas.width / rect.width); }
-        function dropSnack() {
-            if (isDropping || isShopOpen) return; 
-            initAudio(); isDropping = true;
-            const r = SNACKS[currentDroppingIndex].radius; const safeX = Math.max(r + 20, Math.min(previewX, canvas.width - r - 20));
-            createSnack(safeX, dropY, currentDroppingIndex); playDropSound(); 
-            currentDroppingIndex = upcomingSnackIndex; upcomingSnackIndex = getRandomSnackIndex(); 
-            document.getElementById('next-snack-img').src = SNACKS[upcomingSnackIndex].img; setTimeout(() => { isDropping = false; }, 600);
-        }
-
+        function dropSnack() { if (isDropping || isShopOpen) return; initAudio(); isDropping = true; const r = SNACKS[currentDroppingIndex].radius; const safeX = Math.max(r + 20, Math.min(previewX, canvas.width - r - 20)); createSnack(safeX, dropY, currentDroppingIndex); playDropSound(); currentDroppingIndex = upcomingSnackIndex; upcomingSnackIndex = getRandomSnackIndex(); document.getElementById('next-snack-img').src = SNACKS[upcomingSnackIndex].img; setTimeout(() => { isDropping = false; }, 600); }
         canvas.addEventListener('mousemove', (e) => { if(!isShopOpen) previewX = getPointerX(e); });
         canvas.addEventListener('mousedown', dropSnack);
         canvas.addEventListener('touchstart', (e) => { if(!isShopOpen) { e.preventDefault(); previewX = getPointerX(e); } }, {passive: false});
         canvas.addEventListener('touchmove', (e) => { if(!isShopOpen) { e.preventDefault(); previewX = getPointerX(e); } }, {passive: false});
         canvas.addEventListener('touchend', (e) => { if(!isShopOpen) { e.preventDefault(); dropSnack(); } }, {passive: false});
-
         Runner.run(engineRunner, engine); renderLoop();
     </script>
 </body>
