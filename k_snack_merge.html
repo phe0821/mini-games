@@ -9,6 +9,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Bungee&family=Jua&display=swap" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/matter-js/0.19.0/matter.min.js"></script>
     <style>
+        /* ☀️ 기본 테마 (Default) */
         body {
             background: radial-gradient(circle at 50% 30%, #fff5e6 0%, #ffe0b2 40%, #ffcc80 80%, #f57c00 100%);
             display: flex; flex-direction: column; align-items: center;
@@ -67,11 +68,8 @@
         .bomb-neon { color: #ff9100; transition: color 0.2s; }
         
         #bomb-btn.disabled { 
-            background: rgba(120, 120, 120, 0.85); 
-            color: #eeeeee; 
-            border-color: #aaaaaa; 
-            cursor: not-allowed; 
-            box-shadow: inset 0 2px 4px rgba(0,0,0,0.2); 
+            background: rgba(120, 120, 120, 0.85); color: #eeeeee; border-color: #aaaaaa; 
+            cursor: not-allowed; box-shadow: inset 0 2px 4px rgba(0,0,0,0.2); 
         }
         #bomb-btn.disabled:active { transform: none; }
         #bomb-btn.disabled .bomb-neon { color: #cccccc; }
@@ -85,7 +83,6 @@
         #side-panel { grid-column: 1; grid-row: 3; display: flex; flex-direction: column; align-items: center; justify-content: space-between; padding-top: 70px; padding-bottom: 25px; }
         
         #next-snack-container { display: flex; flex-direction: column; align-items: center; margin-bottom: 30px; }
-        
         .side-title { color: #d35400; font-size: 15px; margin-bottom: 8px; text-shadow: 0 1px 2px rgba(255,255,255,0.8); text-align: center; font-family: 'Jua', sans-serif; }
         
         #next-snack-bubble { width: 70px; height: 70px; position: relative; border-radius: 48% 52% 45% 55% / 55% 45% 50% 50%; background: radial-gradient(circle at 30% 30%, rgba(255,255,255,0.8) 0%, rgba(255,255,255,0.1) 30%, transparent 60%, rgba(255,255,255,0.3) 100%); box-shadow: inset -2px -2px 6px rgba(255,255,255,0.4), inset 3px 3px 10px rgba(255,255,255,0.8), 0 8px 15px rgba(0,0,0,0.1); border: 1px solid rgba(255, 255, 255, 0.6); backdrop-filter: blur(2px); -webkit-backdrop-filter: blur(2px); display: flex; justify-content: center; align-items: center; animation: floatBubble 3s ease-in-out infinite; }
@@ -137,28 +134,21 @@
             100% { opacity: 0; transform: translate(-50%, -70%) scale(1.15); text-shadow: 0 0 5px #fff; } 
         }
 
-        /* 💡 잭팟 보상 텍스트 (더 크고 귀엽고 빵빵한 Bold 처리) */
         #jackpot-text {
-            position: fixed; 
-            top: 55%; left: 50%; 
-            transform: translate(-50%, -50%) scale(0); /* 기본 스케일 0으로 대기 */
-            font-size: 55px; 
-            font-weight: 900; color: #FFD700;
-            font-family: 'Jua', sans-serif; pointer-events: none; opacity: 0; z-index: 999;
-            -webkit-text-stroke: 2.5px #fff; 
-            letter-spacing: 2px;
+            position: fixed; top: 55%; left: 50%; transform: translate(-50%, -50%) scale(0);
+            font-size: 55px; font-weight: 900; color: #FFD700; font-family: 'Jua', sans-serif; pointer-events: none; opacity: 0; z-index: 999;
+            -webkit-text-stroke: 2.5px #fff; letter-spacing: 2px;
             text-shadow: 0 0 10px #fff, 0 0 20px #ffea00, 0 0 40px #ff9100, 0 0 60px #ff5100;
         }
 
-        /* 💡 수정됨: 피냐타에서 터져 나오듯 위로 솟구치며 등장하는 바운스 효과 */
         .show-jackpot { animation: popAndBounce 2.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards; }
         @keyframes popAndBounce { 
             0% { opacity: 0; transform: translate(-50%, -50%) scale(0.1); } 
-            15% { opacity: 1; transform: translate(-50%, -65%) scale(1.2) rotate(-8deg); } /* 위로 확 솟구침 */
-            25% { transform: translate(-50%, -50%) scale(0.9) rotate(5deg); } /* 살짝 떨어지며 튕김 */
+            15% { opacity: 1; transform: translate(-50%, -65%) scale(1.2) rotate(-8deg); }
+            25% { transform: translate(-50%, -50%) scale(0.9) rotate(5deg); }
             35% { transform: translate(-50%, -55%) scale(1.05) rotate(-3deg); }
             50% { transform: translate(-50%, -52%) scale(1.0) rotate(0deg); }
-            100% { opacity: 1; transform: translate(-50%, -52%) scale(1.0); } /* 살짝 뜬 상태로 대기 */
+            100% { opacity: 1; transform: translate(-50%, -52%) scale(1.0); }
         }
 
         #button-container { 
@@ -168,8 +158,7 @@
         }
         
         .game-btn { 
-            padding: 8px 12px; 
-            border-radius: 20px; font-size: 14px; font-family: 'Jua', sans-serif; 
+            padding: 8px 12px; border-radius: 20px; font-size: 14px; font-family: 'Jua', sans-serif; 
             cursor: pointer; box-shadow: 0 4px 6px rgba(139, 69, 19, 0.1); 
             transition: 0.1s; border: 2px solid; 
             display: flex; align-items: center; justify-content: center;
@@ -207,99 +196,85 @@
         .shop-header h2 { margin: 0; color: #8B4513; font-family: 'Jua'; font-size: 22px; text-shadow: 1px 1px 0 #FFD700; display: flex; align-items: center; gap: 5px; }
         #close-shop-btn { background: #fff; border: 2px solid #DAA520; color: #8B4513; font-size: 14px; font-weight: bold; width: 30px; height: 30px; border-radius: 50%; cursor: pointer; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
         
-        .shop-wallet-container {
-            display: flex; gap: 12px; justify-content: center; margin-bottom: 15px; width: 100%;
-        }
-        .shop-wallet-badge {
-            background: #d35400; border: 2px solid #f1c40f; border-radius: 20px;
-            padding: 6px 16px; font-family: 'Jua'; color: #fff;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1), inset 0 2px 4px rgba(255,255,255,0.2);
-            display: flex; align-items: center; justify-content: center; text-shadow: 0 1px 2px rgba(0,0,0,0.3);
-            white-space: nowrap;
-        }
+        .shop-wallet-container { display: flex; gap: 12px; justify-content: center; margin-bottom: 15px; width: 100%; }
+        .shop-wallet-badge { background: #d35400; border: 2px solid #f1c40f; border-radius: 20px; padding: 6px 16px; font-family: 'Jua'; color: #fff; box-shadow: 0 4px 6px rgba(0,0,0,0.1), inset 0 2px 4px rgba(255,255,255,0.2); display: flex; align-items: center; justify-content: center; text-shadow: 0 1px 2px rgba(0,0,0,0.3); white-space: nowrap; }
         
         .shop-tabs { display: flex; gap: 4px; margin-bottom: 15px; }
-        .shop-tab {
-            flex: 1; text-align: center; padding: 8px 0; font-family: 'Jua'; font-size: 15px; 
-            background: #fff5e6; color: #a0522d; border-radius: 12px 12px 0 0;
-            border: 2px solid transparent; border-bottom: 3px solid #DAA520; 
-            cursor: pointer; transition: 0.2s; white-space: nowrap;
-        }
-        .shop-tab.active { 
-            background: #FFD700; color: #8B4513; font-weight: bold; 
-            border: 2px solid #DAA520; border-bottom: none; transform: translateY(-2px); 
-        }
+        .shop-tab { flex: 1; text-align: center; padding: 8px 0; font-family: 'Jua'; font-size: 15px; background: #fff5e6; color: #a0522d; border-radius: 12px 12px 0 0; border: 2px solid transparent; border-bottom: 3px solid #DAA520; cursor: pointer; transition: 0.2s; white-space: nowrap; }
+        .shop-tab.active { background: #FFD700; color: #8B4513; font-weight: bold; border: 2px solid #DAA520; border-bottom: none; transform: translateY(-2px); }
         
         .shop-content { flex: 1; overflow-y: auto; display: flex; flex-direction: column; gap: 10px; padding-right: 5px; }
         .shop-content::-webkit-scrollbar { width: 6px; }
         .shop-content::-webkit-scrollbar-track { background: rgba(255,215,0,0.1); border-radius: 10px; }
         .shop-content::-webkit-scrollbar-thumb { background: #DAA520; border-radius: 10px; }
 
-        .shop-item {
-            background: #fff; border: 2px solid #FFD700; border-radius: 12px;
-            padding: 10px; display: flex; align-items: center; gap: 10px;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.05); transition: transform 0.1s;
-        }
+        .shop-item { background: #fff; border: 2px solid #FFD700; border-radius: 12px; padding: 10px; display: flex; align-items: center; gap: 10px; box-shadow: 0 2px 4px rgba(0,0,0,0.05); transition: transform 0.1s; }
         .shop-item:active { transform: scale(0.98); }
         .shop-item-img-wrapper { width: 48px; height: 48px; background: #fff5e6; border-radius: 50%; border: 2px solid #ffe0b2; display: flex; justify-content: center; align-items: center; flex-shrink: 0; overflow: hidden; }
         .shop-item-img { width: 36px; height: 36px; object-fit: contain; }
         
-        .css-3d-box {
-            width: 22px; height: 22px;
-            position: relative; margin: auto;
-            transform-style: preserve-3d;
-            transform: rotateX(-20deg) rotateY(-35deg) scale(0.8);
-        }
-        .css-3d-box .face {
-            position: absolute; width: 22px; height: 22px;
-            background: rgba(255, 255, 255, 0.25); border: 2px solid rgba(255, 177, 66, 0.9);
-            box-shadow: inset 0 0 5px rgba(255, 255, 255, 0.6);
-        }
+        .css-3d-box { width: 22px; height: 22px; position: relative; margin: auto; transform-style: preserve-3d; transform: rotateX(-20deg) rotateY(-35deg) scale(0.8); }
+        .css-3d-box .face { position: absolute; width: 22px; height: 22px; background: rgba(255, 255, 255, 0.25); border: 2px solid rgba(255, 177, 66, 0.9); box-shadow: inset 0 0 5px rgba(255, 255, 255, 0.6); }
         .css-3d-box .front  { transform: translateZ(11px); }
         .css-3d-box .back   { transform: rotateY(180deg) translateZ(11px); }
         .css-3d-box .right  { transform: rotateY(90deg) translateZ(11px); }
         .css-3d-box .left   { transform: rotateY(-90deg) translateZ(11px); }
         .css-3d-box .top    { transform: rotateX(90deg) translateZ(11px); background: rgba(255, 255, 255, 0.5); }
         .css-3d-box .bottom { transform: rotateX(-90deg) translateZ(11px); }
-
-        .filter-night { filter: brightness(0.6) sepia(0.8) hue-rotate(200deg) saturate(300%); }
+        
+        /* 스킨 썸네일 전용 색상 덮어쓰기 */
+        .css-3d-box.summer .face { background: rgba(139, 195, 74, 0.4); border-color: #8D6E63; }
 
         .shop-item-info { flex: 1; }
         .shop-item-name { font-family: 'Jua'; font-size: 15px; color: #8B4513; margin-bottom: 2px; line-height: 1.1; }
         .shop-item-desc { font-size: 11px; color: #666; line-height: 1.2; word-break: keep-all; }
         
-        .shop-item-btn {
-            padding: 6px 12px; border-radius: 15px; font-family: 'Jua'; font-size: 13px; cursor: pointer; border: 2px solid; white-space: nowrap; transition: 0.1s;
-        }
+        .shop-item-btn { padding: 6px 12px; border-radius: 15px; font-family: 'Jua'; font-size: 13px; cursor: pointer; border: 2px solid; white-space: nowrap; transition: 0.1s; }
         .btn-buy { background: #f57c00; color: #fff; border-color: #DAA520; }
         .btn-buy:active { background: #e65100; }
         .btn-equip { background: #4caf50; color: #fff; border-color: #388e3c; }
         .btn-equipped { background: #e0e0e0; color: #757575; border-color: #bdbdbd; cursor: default; }
 
-        body.night-mode {
-            background: linear-gradient(to bottom, #0f172a 0%, #1b2a47 40%, #2e4a62 80%, #0d1117 100%);
-        }
-        body.night-mode #game-title {
-            color: #ffdda1; text-shadow: 2px 2px 0px #d35400, 0px 0px 10px #ffea00, 0px 0px 20px #ff9100, 0px 0px 30px #ff5100;
-        }
+        /* 🌙 심야 포장마차 테마 */
+        body.night-mode { background: linear-gradient(to bottom, #0f172a 0%, #1b2a47 40%, #2e4a62 80%, #0d1117 100%); }
+        body.night-mode #game-title { color: #ffdda1; text-shadow: 2px 2px 0px #d35400, 0px 0px 10px #ffea00, 0px 0px 20px #ff9100, 0px 0px 30px #ff5100; }
         body.night-mode .side-title { color: #ffdda1; text-shadow: 0 1px 3px rgba(0,0,0,0.8); }
-        body.night-mode #next-snack-bubble { 
-            background: radial-gradient(circle at 30% 30%, rgba(200,220,255,0.3) 0%, rgba(100,120,150,0.1) 50%, transparent 80%, rgba(50,70,100,0.4) 100%);
-            border-color: rgba(200, 220, 255, 0.4);
-            box-shadow: inset -2px -2px 6px rgba(0,0,0,0.6), inset 3px 3px 10px rgba(200,220,255,0.2), 0 8px 15px rgba(0,0,0,0.7); 
-        }
+        body.night-mode #next-snack-bubble { background: radial-gradient(circle at 30% 30%, rgba(200,220,255,0.3) 0%, rgba(100,120,150,0.1) 50%, transparent 80%, rgba(50,70,100,0.4) 100%); border-color: rgba(200, 220, 255, 0.4); box-shadow: inset -2px -2px 6px rgba(0,0,0,0.6), inset 3px 3px 10px rgba(200,220,255,0.2), 0 8px 15px rgba(0,0,0,0.7); }
         body.night-mode .stat-box { background: rgba(15, 23, 42, 0.85); border-color: #a0aec0; color: #e2e8f0; }
         body.night-mode .stat-box.high { background: rgba(180, 50, 20, 0.9); border-color: #ffdda1; color: #fff; }
-        body.night-mode #evolution-chain {
-            background: linear-gradient(to bottom, rgba(30,40,60,0.9), rgba(15,20,30,0.9)); 
-            border-color: #a0aec0;
-            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.6), inset 0 2px 5px rgba(255,255,255,0.1);
-        }
+        body.night-mode #evolution-chain { background: linear-gradient(to bottom, rgba(30,40,60,0.9), rgba(15,20,30,0.9)); border-color: #a0aec0; box-shadow: 0 10px 20px rgba(0, 0, 0, 0.6), inset 0 2px 5px rgba(255,255,255,0.1); }
         body.night-mode .game-btn { background: rgba(30, 40, 60, 0.9); color: #e2e8f0; border-color: #a0aec0; }
+
+        /* 🌿 여름날 툇마루 테마 (CSS-Only) */
+        body.summer-mode {
+            background: linear-gradient(135deg, #aed581 0%, #dcedc8 30%, #fff9c4 70%, #a1887f 100%);
+        }
+        body.summer-mode #game-title {
+            color: #fff; text-shadow: 2px 2px 0px #5d4037, 0px 4px 8px rgba(0,0,0,0.3);
+        }
+        body.summer-mode .side-title { color: #4e342e; text-shadow: 0 1px 2px rgba(255,255,255,0.8); }
+        body.summer-mode #next-snack-bubble { 
+            background: rgba(255, 236, 179, 0.8); border-color: #8d6e63;
+            box-shadow: inset -2px -2px 6px rgba(141,110,99,0.3), inset 3px 3px 10px rgba(255,255,255,0.8), 0 8px 15px rgba(0,0,0,0.1); 
+        }
+        body.summer-mode .stat-box {
+            background: #ffe082; border-color: #8d6e63; color: #4e342e;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1), inset 0 2px 4px rgba(255,255,255,0.4);
+        }
+        body.summer-mode .stat-box.high {
+            background: #ffb300; border-color: #5d4037; color: #3e2723;
+        }
+        body.summer-mode #evolution-chain {
+            background: rgba(255, 236, 179, 0.8); border-color: #8d6e63;
+        }
+        body.summer-mode .game-btn { background: #ffe082; color: #4e342e; border-color: #8d6e63; }
+        body.summer-mode #restart-btn { background: #e57373; color: #fff; border-color: #b71c1c; }
+        body.summer-mode #mute-btn { background: #64b5f6; color: #fff; border-color: #1565c0; }
+        body.summer-mode #total-chicken { color: #00c853; font-weight: bold; text-shadow: 0 1px 2px rgba(0,0,0,0.2); } 
+        body.summer-mode .bomb-neon { color: #00c853; text-shadow: 0 0 5px rgba(0,200,83,0.5); }
     </style>
 </head>
 <body>
-    
     <div id="app-grid">
         <h1 id="game-title">K-SNACK MERGE!</h1>
         
@@ -338,9 +313,7 @@
             <div id="great-effect" class="effect-text">GREAT!</div>
             <div id="wow-effect" class="effect-text">WOW!</div>
             <div id="clear-effect" class="effect-text">Chicken<br>Clear!</div>
-            
             <div id="jackpot-text">+3 🍗</div>
-            
             <canvas id="gameCanvas" width="360" height="600"></canvas>
         </div>
 
@@ -440,6 +413,7 @@
         let currentShopTab = 'booster'; 
         let isShopOpen = false;
 
+        // 💡 수정됨: 환경 스킨 토글 로직 완벽 적용 (body class 교체)
         function applySkins() {
             const collection = Array.isArray(shopData.equipped.collection) ? shopData.equipped.collection : [];
             SNACKS[3].img = "mandu.png"; SNACKS[4].img = "fish.png";
@@ -469,8 +443,11 @@
             }
 
             const environment = shopData.equipped.environment;
+            // 기존 테마 클래스 싹 날리기
+            document.body.classList.remove('night-mode', 'summer-mode');
+            // 장착된 테마가 있으면 해당 클래스 부여
             if (environment === 'night') { document.body.classList.add('night-mode'); } 
-            else { document.body.classList.remove('night-mode'); }
+            else if (environment === 'summer') { document.body.classList.add('summer-mode'); }
         }
 
         let isDropping = false; let previewX = canvas.width / 2; let frameCount = 0;
@@ -510,6 +487,7 @@
         let audioCtx = null; let isMuted = false;
         function initAudio() { if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)(); if (audioCtx.state === 'suspended') audioCtx.resume(); }
 
+        // 💡 수정됨: 상점에 '여름날 툇마루' 스킨 추가!
         const SHOP_ITEMS = {
             booster: [
                 { id: 'bomb_1', name: '흔들기 1개', price: 3, desc: '1회용 위기 탈출<br>상자 흔들기', img: 'css-box', amount: 1 },
@@ -525,7 +503,8 @@
                 { id: 'rainbow', name: '무지개 만두', price: 8, desc: '영롱한 빛깔의<br>무지개 스킨', img: 'rainbow_mandu.png' } 
             ],
             environment: [
-                { id: 'night', name: '심야 포장마차', price: 10, desc: '포장마차 감성의<br>특별한 배경', img: 'tent.png' }
+                { id: 'summer', name: '여름날 툇마루', price: 10, desc: '편안하고 밝은<br>그린 테마', img: 'green.png' },
+                { id: 'night', name: '심야 포장마차', price: 10, desc: '차분하고 어두운<br>네이비 테마', img: 'tent.png' }
             ]
         };
 
@@ -541,8 +520,11 @@
                 let btnHtml = '';
                 let imgHtml = '';
 
+                // 썸네일 아이콘 분기 처리
                 if (item.img === 'css-box') {
                     imgHtml = `<div class="css-3d-box"><div class="face front"></div><div class="face back"></div><div class="face right"></div><div class="face left"></div><div class="face top"></div><div class="face bottom"></div></div>`;
+                } else if (item.img === 'css-box-summer') {
+                    imgHtml = `<div class="css-3d-box summer"><div class="face front"></div><div class="face back"></div><div class="face right"></div><div class="face left"></div><div class="face top"></div><div class="face bottom"></div></div>`;
                 } else {
                     imgHtml = `<img src="${item.img}" class="shop-item-img">`;
                 }
@@ -585,12 +567,8 @@
                 document.getElementById('total-chicken').innerText = totalChickens;
                 localStorage.setItem('kSnackTotalChickens', totalChickens);
                 
-                updateBombUI(); 
-                playGoodSound(); 
-                renderShopItems(); 
-            } else {
-                alert('금고에 치킨이 부족합니다! 🍗');
-            }
+                updateBombUI(); playGoodSound(); renderShopItems(); 
+            } else { alert('금고에 치킨이 부족합니다! 🍗'); }
         };
 
         function updateBombUI() {
@@ -601,21 +579,15 @@
             const shopBombEl = document.getElementById('shop-bomb-count');
             if(shopBombEl) shopBombEl.innerText = bombCount;
             
-            if(bombCount <= 0 || isQuaking) {
-                bombBtn.classList.add('disabled');
-            } else {
-                bombBtn.classList.remove('disabled');
-            }
+            if(bombCount <= 0 || isQuaking) { bombBtn.classList.add('disabled'); } 
+            else { bombBtn.classList.remove('disabled'); }
         }
 
         window.useBomb = function() {
             initAudio();
             if(isDropping || isShopOpen) return;
             if(bombCount <= 0 || isQuaking) return; 
-
-            bombCount--;
-            updateBombUI();
-            triggerEarthquake();
+            bombCount--; updateBombUI(); triggerEarthquake();
         }
 
         window.buyItem = function(id, category, price) {
@@ -628,8 +600,7 @@
                 shopData.owned.push(id);
                 localStorage.setItem('kSnackOwned', JSON.stringify(shopData.owned));
                 
-                playGoodSound(); 
-                renderShopItems();
+                playGoodSound(); renderShopItems();
             } else { alert('금고에 치킨이 부족합니다! 🍗'); }
         };
 
@@ -685,43 +656,26 @@
         });
 
         function triggerEarthquake() {
-            isQuaking = true;
-            updateBombUI(); 
-            
-            const toast = document.getElementById('earthquake-toast');
-            toast.classList.remove('hidden');
-
+            isQuaking = true; updateBombUI(); 
+            const toast = document.getElementById('earthquake-toast'); toast.classList.remove('hidden');
             const safetyOptions = { isStatic: true, friction: 0, restitution: 0, label: 'SafetyNet' };
-            const safetyNet = [
-                Bodies.rectangle(10, -200, 20, 1000, safetyOptions),
-                Bodies.rectangle(350, -200, 20, 1000, safetyOptions),
-                Bodies.rectangle(180, -800, 400, 50, safetyOptions)
-            ];
+            const safetyNet = [ Bodies.rectangle(10, -200, 20, 1000, safetyOptions), Bodies.rectangle(350, -200, 20, 1000, safetyOptions), Bodies.rectangle(180, -800, 400, 50, safetyOptions) ];
             World.add(world, safetyNet); 
 
             setTimeout(() => {
                 playRumbleSound(2.5);
                 const shakeInterval = setInterval(() => {
-                    const allBodies = Composite.allBodies(world);
-                    allBodies.forEach(body => {
-                        if (body.label !== 'Wall' && body.label !== 'SafetyNet') {
-                            Matter.Body.setVelocity(body, { x: (Math.random() - 0.5) * 5, y: (Math.random() - 0.5) * 5 - 1 });
-                        }
+                    Composite.allBodies(world).forEach(body => {
+                        if (body.label !== 'Wall' && body.label !== 'SafetyNet') { Matter.Body.setVelocity(body, { x: (Math.random() - 0.5) * 5, y: (Math.random() - 0.5) * 5 - 1 }); }
                     });
                 }, 100); 
 
                 setTimeout(() => {
-                    clearInterval(shakeInterval);
-                    toast.classList.add('hidden');
-                    playLaunchSound();
-                    setTimeout(() => playFallSound(), 1350);
-
-                    const allBodies = Composite.allBodies(world);
-                    allBodies.forEach(body => {
+                    clearInterval(shakeInterval); toast.classList.add('hidden'); playLaunchSound(); setTimeout(() => playFallSound(), 1350);
+                    Composite.allBodies(world).forEach(body => {
                         if (body.label !== 'Wall' && body.label !== 'SafetyNet') {
                             Matter.Body.setPosition(body, { x: body.position.x, y: body.position.y - 10 });
-                            const level = parseInt(body.label); 
-                            const popPower = 18 + ((7 - level) * 2.5) + (Math.random() * 4); 
+                            const level = parseInt(body.label); const popPower = 18 + ((7 - level) * 2.5) + (Math.random() * 4); 
                             Matter.Body.setVelocity(body, { x: (Math.random() - 0.5) * 12, y: -popPower });
                             Matter.Body.setAngularVelocity(body, (Math.random() - 0.5) * 0.6);
                             body.frictionAir = 0.025 - (level * 0.003);
@@ -729,22 +683,14 @@
                     });
 
                     setTimeout(() => {
-                        const currentBodies = Composite.allBodies(world);
-                        currentBodies.forEach(body => {
-                            if (body.label !== 'Wall' && body.label !== 'SafetyNet') {
-                                body.frictionAir = 0.001; 
-                            }
-                        });
-                        World.remove(world, safetyNet);
-                        
-                        isQuaking = false; 
-                        updateBombUI(); 
-                        
+                        Composite.allBodies(world).forEach(body => { if (body.label !== 'Wall' && body.label !== 'SafetyNet') body.frictionAir = 0.001; });
+                        World.remove(world, safetyNet); isQuaking = false; updateBombUI(); 
                     }, 4000); 
                 }, 2500); 
             }, 500);
         }
 
+        // 사운드 함수들 생략 없이 그대로 유지
         function playTone(freq, type, startTime, duration, vol = 0.2) { const osc = audioCtx.createOscillator(); const gain = audioCtx.createGain(); osc.type = type; osc.connect(gain); gain.connect(audioCtx.destination); osc.frequency.value = freq; gain.gain.setValueAtTime(0, startTime); gain.gain.linearRampToValueAtTime(vol, startTime + 0.02); gain.gain.exponentialRampToValueAtTime(0.01, startTime + duration); osc.start(startTime); osc.stop(startTime + duration); }
         function playSnap(startTime, freq = 300) { const osc = audioCtx.createOscillator(); const gain = audioCtx.createGain(); osc.type = 'triangle'; osc.connect(gain); gain.connect(audioCtx.destination); osc.frequency.setValueAtTime(freq * 1.5, startTime); osc.frequency.exponentialRampToValueAtTime(freq / 2, startTime + 0.03); gain.gain.setValueAtTime(0, startTime); gain.gain.linearRampToValueAtTime(0.5, startTime + 0.002); gain.gain.exponentialRampToValueAtTime(0.01, startTime + 0.04); osc.start(startTime); osc.stop(startTime + 0.04); }
         function playDropSound() { if (isMuted || !audioCtx) return; const osc = audioCtx.createOscillator(); const gain = audioCtx.createGain(); osc.type = 'sine'; osc.connect(gain); gain.connect(audioCtx.destination); osc.frequency.setValueAtTime(600, audioCtx.currentTime); osc.frequency.exponentialRampToValueAtTime(300, audioCtx.currentTime + 0.1); gain.gain.setValueAtTime(0.3, audioCtx.currentTime); gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.1); osc.start(); osc.stop(audioCtx.currentTime + 0.1); }
@@ -752,32 +698,8 @@
         function playGoodSound() { if (isMuted || !audioCtx) return; const now = audioCtx.currentTime; const notes = [261.63, 329.63, 392.00]; notes.forEach((freq, i) => { const t = now + (i * 0.06); playSnap(t, freq); playTone(freq, 'sine', t, 0.6, 0.25); }); }
         function playGreatSound() { if (isMuted || !audioCtx) return; const now = audioCtx.currentTime; const notes = [261.63, 329.63, 392.00, 523.25]; notes.forEach((freq, i) => { const t = now + (i * 0.08); const mainOsc = audioCtx.createOscillator(); const mainGain = audioCtx.createGain(); mainOsc.type = 'sine'; mainOsc.connect(mainGain); mainGain.connect(audioCtx.destination); mainOsc.frequency.setValueAtTime(freq, t); mainGain.gain.setValueAtTime(0, t); mainGain.gain.linearRampToValueAtTime(0.2, t + 0.02); mainGain.gain.exponentialRampToValueAtTime(0.01, t + 0.8); mainOsc.start(t); mainOsc.stop(t + 0.8); }); }
         function playWowSound() { if (isMuted || !audioCtx) return; const now = audioCtx.currentTime; const notes = [329.63, 392.00, 523.25, 587.33, 783.99]; notes.forEach((freq, i) => { const t = now + (i * 0.06); const mainOsc = audioCtx.createOscillator(); const mainGain = audioCtx.createGain(); mainOsc.type = 'triangle'; mainOsc.connect(mainGain); mainGain.connect(audioCtx.destination); mainOsc.frequency.setValueAtTime(freq, t); mainGain.gain.setValueAtTime(0, t); mainGain.gain.linearRampToValueAtTime(0.25, t + 0.02); mainGain.gain.exponentialRampToValueAtTime(0.01, t + 1.2); mainOsc.start(t); mainOsc.stop(t + 1.2); }); }
-        
         function playClearSound() { if (isMuted || !audioCtx) return; const now = audioCtx.currentTime; for (let i = 0; i < 30; i++) { const popTime = now + (Math.random() * 1.45); const popOsc = audioCtx.createOscillator(); const popGain = audioCtx.createGain(); popOsc.type = 'sine'; popOsc.connect(popGain); popGain.connect(audioCtx.destination); const startFreq = 400 + Math.random() * 300; popOsc.frequency.setValueAtTime(startFreq, popTime); popOsc.frequency.exponentialRampToValueAtTime(startFreq * 0.5, popTime + 0.05); popGain.gain.setValueAtTime(0, popTime); popGain.gain.linearRampToValueAtTime(0.15 + Math.random() * 0.1, popTime + 0.01); popGain.gain.exponentialRampToValueAtTime(0.01, popTime + 0.06); popOsc.start(popTime); popOsc.stop(popTime + 0.06); const snapOsc = audioCtx.createOscillator(); const snapGain = audioCtx.createGain(); snapOsc.type = 'triangle'; snapOsc.connect(snapGain); snapGain.connect(audioCtx.destination); snapOsc.frequency.setValueAtTime(800 + Math.random() * 500, popTime); snapGain.gain.setValueAtTime(0.05, popTime); snapGain.gain.exponentialRampToValueAtTime(0.001, popTime + 0.02); snapOsc.start(popTime); snapOsc.stop(popTime + 0.02); } const clearNotes = [261.63, 392.00, 523.25, 659.25, 783.99, 1046.50]; clearNotes.forEach((freq, i) => { const t = now + (i * 0.05); const chordOsc = audioCtx.createOscillator(); const chordGain = audioCtx.createGain(); chordOsc.type = 'triangle'; chordOsc.connect(chordGain); chordGain.connect(audioCtx.destination); chordOsc.frequency.setValueAtTime(freq, t); chordGain.gain.setValueAtTime(0, t); chordGain.gain.linearRampToValueAtTime(0.3, t + 0.02); chordGain.gain.exponentialRampToValueAtTime(0.01, t + 1.5); chordOsc.start(t); chordOsc.stop(t + 1.5); }); }
-        
-        function playCoinSound(index) {
-            if (isMuted || !audioCtx) return;
-            const now = audioCtx.currentTime;
-            const freqs = [880, 987.77, 1046.50]; 
-            const targetFreq = freqs[index] || 1046.50;
-            
-            const osc = audioCtx.createOscillator();
-            const gain = audioCtx.createGain();
-            osc.type = 'sine';
-            osc.connect(gain);
-            gain.connect(audioCtx.destination);
-            
-            osc.frequency.setValueAtTime(targetFreq, now);
-            osc.frequency.exponentialRampToValueAtTime(targetFreq * 1.5, now + 0.1);
-            
-            gain.gain.setValueAtTime(0, now);
-            gain.gain.linearRampToValueAtTime(0.3, now + 0.01);
-            gain.gain.exponentialRampToValueAtTime(0.01, now + 0.15);
-            
-            osc.start(now);
-            osc.stop(now + 0.15);
-        }
-
+        function playCoinSound(index) { if (isMuted || !audioCtx) return; const now = audioCtx.currentTime; const freqs = [880, 987.77, 1046.50]; const targetFreq = freqs[index] || 1046.50; const osc = audioCtx.createOscillator(); const gain = audioCtx.createGain(); osc.type = 'sine'; osc.connect(gain); gain.connect(audioCtx.destination); osc.frequency.setValueAtTime(targetFreq, now); osc.frequency.exponentialRampToValueAtTime(targetFreq * 1.5, now + 0.1); gain.gain.setValueAtTime(0, now); gain.gain.linearRampToValueAtTime(0.3, now + 0.01); gain.gain.exponentialRampToValueAtTime(0.01, now + 0.15); osc.start(now); osc.stop(now + 0.15); }
         function playRumbleSound(duration) { if (isMuted || !audioCtx) return; const osc = audioCtx.createOscillator(); const gain = audioCtx.createGain(); osc.type = 'sawtooth'; osc.connect(gain); gain.connect(audioCtx.destination); osc.frequency.setValueAtTime(40, audioCtx.currentTime); osc.frequency.linearRampToValueAtTime(50, audioCtx.currentTime + duration / 2); osc.frequency.linearRampToValueAtTime(40, audioCtx.currentTime + duration); gain.gain.setValueAtTime(0, audioCtx.currentTime); gain.gain.linearRampToValueAtTime(0.04, audioCtx.currentTime + 0.2); gain.gain.setValueAtTime(0.04, audioCtx.currentTime + duration - 0.2); gain.gain.linearRampToValueAtTime(0, audioCtx.currentTime + duration); osc.start(audioCtx.currentTime); osc.stop(audioCtx.currentTime + duration); }
         function playLaunchSound() { if (isMuted || !audioCtx) return; const now = audioCtx.currentTime; const boomOsc = audioCtx.createOscillator(); const boomGain = audioCtx.createGain(); boomOsc.type = 'triangle'; boomOsc.connect(boomGain); boomGain.connect(audioCtx.destination); boomOsc.frequency.setValueAtTime(300, now); boomOsc.frequency.exponentialRampToValueAtTime(30, now + 0.2); boomGain.gain.setValueAtTime(0, now); boomGain.gain.linearRampToValueAtTime(0.12, now + 0.02); boomGain.gain.exponentialRampToValueAtTime(0.001, now + 0.6); boomOsc.start(now); boomOsc.stop(now + 0.6); const snapOsc = audioCtx.createOscillator(); const snapGain = audioCtx.createGain(); snapOsc.type = 'sawtooth'; snapOsc.connect(snapGain); snapGain.connect(audioCtx.destination); snapOsc.frequency.setValueAtTime(600, now); snapOsc.frequency.exponentialRampToValueAtTime(50, now + 0.15); snapGain.gain.setValueAtTime(0, now); snapGain.gain.linearRampToValueAtTime(0.08, now + 0.01); snapGain.gain.exponentialRampToValueAtTime(0.001, now + 0.3); snapOsc.start(now); snapOsc.stop(now + 0.3); }
         function playFallSound() { if (isMuted || !audioCtx) return; const now = audioCtx.currentTime; const osc = audioCtx.createOscillator(); const gain = audioCtx.createGain(); osc.type = 'sine'; osc.connect(gain); gain.connect(audioCtx.destination); osc.frequency.setValueAtTime(150, now); osc.frequency.exponentialRampToValueAtTime(30, now + 0.15); gain.gain.setValueAtTime(0, now); gain.gain.linearRampToValueAtTime(0.10, now + 0.02); gain.gain.exponentialRampToValueAtTime(0.001, now + 0.3); osc.start(now); osc.stop(now + 0.3); }
@@ -785,114 +707,56 @@
         document.getElementById('mute-btn').addEventListener('click', (e) => { isMuted = !isMuted; e.target.innerText = isMuted ? '🔇 소리 꺼짐' : '🔊 소리 켜짐'; });
         
         document.getElementById('restart-btn').addEventListener('click', () => {
-            const allBodies = Composite.allBodies(world);
-            allBodies.forEach(body => { if (body.label !== 'Wall') World.remove(world, body); });
-            
-            currentDroppingIndex = getRandomSnackIndex(); 
-            upcomingSnackIndex = getRandomSnackIndex(); 
-            document.getElementById('next-snack-img').src = SNACKS[upcomingSnackIndex].img;
-            isDropping = false;
+            Composite.allBodies(world).forEach(body => { if (body.label !== 'Wall') World.remove(world, body); });
+            currentDroppingIndex = getRandomSnackIndex(); upcomingSnackIndex = getRandomSnackIndex(); 
+            document.getElementById('next-snack-img').src = SNACKS[upcomingSnackIndex].img; isDropping = false;
         });
 
         function createSnack(x, y, level) {
-            const baseDensity = 0.001;
-            const snackDensity = baseDensity * Math.pow(1.2, level);
-            const body = Bodies.circle(x, y, SNACKS[level].radius, {
-                restitution: 0.3, friction: 0.005, density: snackDensity, label: level.toString()
-            });
+            const baseDensity = 0.001; const snackDensity = baseDensity * Math.pow(1.2, level);
+            const body = Bodies.circle(x, y, SNACKS[level].radius, { restitution: 0.3, friction: 0.005, density: snackDensity, label: level.toString() });
             World.add(world, body); return body;
         }
 
-        function triggerEffect(id, className) {
-            const el = document.getElementById(id);
-            el.classList.remove(className);
-            void el.offsetWidth; 
-            el.classList.add(className);
-        }
+        function triggerEffect(id, className) { const el = document.getElementById(id); el.classList.remove(className); void el.offsetWidth; el.classList.add(className); }
 
         function startGoldenRain() {
-            isRaining = true;
-            goldenRainParticles = [];
+            isRaining = true; goldenRainParticles = [];
             for(let i=0; i<60; i++) {
                 goldenRainParticles.push({
-                    x: Math.random() * canvas.width,
-                    y: Math.random() * -600,
-                    speed: 2 + Math.random() * 4,
-                    size: 3 + Math.random() * 4,
-                    wobble: Math.random() * Math.PI * 2,
-                    wobbleSpeed: 0.02 + Math.random() * 0.05
+                    x: Math.random() * canvas.width, y: Math.random() * -600,
+                    speed: 2 + Math.random() * 4, size: 3 + Math.random() * 4,
+                    wobble: Math.random() * Math.PI * 2, wobbleSpeed: 0.02 + Math.random() * 0.05
                 });
             }
             setTimeout(() => { isRaining = false; }, 3500);
         }
 
-        // 💡 극강의 타격감: 피냐타 바운스 후 블랙홀 가속도로 빨려 들어가는 연출
         function triggerJackpotMagnet() {
-            const jackpotEl = document.getElementById('jackpot-text');
-            const walletBadge = document.getElementById('wallet-badge');
+            const jackpotEl = document.getElementById('jackpot-text'); const walletBadge = document.getElementById('wallet-badge');
+            jackpotEl.style.transition = ''; jackpotEl.style.top = '55%'; jackpotEl.style.left = '50%'; jackpotEl.style.transform = 'translate(-50%, -50%) scale(0.1)'; jackpotEl.style.opacity = '0';
             
-            // 1. 초기화 후 피냐타 등장 연출 (popAndBounce, 2.5초)
-            jackpotEl.style.transition = '';
-            jackpotEl.style.top = '55%';
-            jackpotEl.style.left = '50%';
-            jackpotEl.style.transform = 'translate(-50%, -50%) scale(0.1)';
-            jackpotEl.style.opacity = '0';
-            
-            // 💡 0.4초 딜레이: 클리어 글씨가 쾅! 터진 직후 알을 깨고 나오도록
-            setTimeout(() => {
-                jackpotEl.classList.remove('show-jackpot');
-                void jackpotEl.offsetWidth; 
-                jackpotEl.classList.add('show-jackpot');
-            }, 400);
+            setTimeout(() => { jackpotEl.classList.remove('show-jackpot'); void jackpotEl.offsetWidth; jackpotEl.classList.add('show-jackpot'); }, 400);
 
-            // 2. 2.5초 뒤, 블랙홀 가속도(Vacuum Effect)로 지갑에 흡수
             setTimeout(() => {
-                jackpotEl.classList.remove('show-jackpot');
+                jackpotEl.classList.remove('show-jackpot'); jackpotEl.style.transform = 'translate(-50%, -52%) scale(1)'; jackpotEl.style.opacity = '1'; void jackpotEl.offsetWidth;
+                const rect = walletBadge.getBoundingClientRect(); const targetX = rect.left + rect.width / 2; const targetY = rect.top + rect.height / 2;
                 
-                // 직전 위치/크기 고정
-                jackpotEl.style.transform = 'translate(-50%, -52%) scale(1)';
-                jackpotEl.style.opacity = '1';
-                void jackpotEl.offsetWidth;
-
-                // 목표 지점(지갑) 계산
-                const rect = walletBadge.getBoundingClientRect();
-                const targetX = rect.left + rect.width / 2;
-                const targetY = rect.top + rect.height / 2;
-                
-                // 💡 블랙홀 가속도 곡선: 처음에 느렸다가 마지막에 빛의 속도로 빨려 들어감
                 jackpotEl.style.transition = 'all 0.5s cubic-bezier(0.55, 0.055, 0.675, 0.19)'; 
-                jackpotEl.style.top = targetY + 'px';
-                jackpotEl.style.left = targetX + 'px';
-                jackpotEl.style.transform = 'translate(-50%, -50%) scale(0.0)'; // 완전히 점이 됨
-                jackpotEl.style.opacity = '0';
-            }, 2500 + 400); // 딜레이 시간만큼 더해줌
+                jackpotEl.style.top = targetY + 'px'; jackpotEl.style.left = targetX + 'px'; jackpotEl.style.transform = 'translate(-50%, -50%) scale(0.0)'; jackpotEl.style.opacity = '0';
+            }, 2500 + 400); 
 
-            // 3. 뱃지 쿵쿵쿵! 3연속 펌핑 및 숫자 상승
             setTimeout(() => {
-                jackpotEl.style.transition = ''; 
-                jackpotEl.style.top = '55%';
-                jackpotEl.style.left = '50%';
-                
+                jackpotEl.style.transition = ''; jackpotEl.style.top = '55%'; jackpotEl.style.left = '50%';
                 let count = 0;
                 const coinInterval = setInterval(() => {
-                    totalChickens++;
-                    localStorage.setItem('kSnackTotalChickens', totalChickens);
-                    document.getElementById('total-chicken').innerText = totalChickens;
-                    
+                    totalChickens++; localStorage.setItem('kSnackTotalChickens', totalChickens); document.getElementById('total-chicken').innerText = totalChickens;
                     playCoinSound(count);
-                    
-                    walletBadge.classList.remove('pump');
-                    void walletBadge.offsetWidth;
-                    walletBadge.classList.add('pump');
-                    
+                    walletBadge.classList.remove('pump'); void walletBadge.offsetWidth; walletBadge.classList.add('pump');
                     count++;
-                    if(count >= 3) {
-                        clearInterval(coinInterval);
-                        setTimeout(() => walletBadge.classList.remove('pump'), 200);
-                    }
+                    if(count >= 3) { clearInterval(coinInterval); setTimeout(() => walletBadge.classList.remove('pump'), 200); }
                 }, 150); 
-                
-            }, 3000 + 400); // 날아가는 시간 0.5초 직후
+            }, 3000 + 400); 
         }
 
         Events.on(engine, 'collisionStart', (event) => {
@@ -904,59 +768,89 @@
                 if (bodyA.label === bodyB.label && bodyA.label !== 'Wall') {
                     bodyA.isMerging = true; bodyB.isMerging = true;
                     let level = parseInt(bodyA.label);
-                    const newX = (bodyA.position.x + bodyB.position.x) / 2;
-                    const newY = (bodyA.position.y + bodyB.position.y) / 2;
+                    const newX = (bodyA.position.x + bodyB.position.x) / 2; const newY = (bodyA.position.y + bodyB.position.y) / 2;
 
                     if (level < SNACKS.length - 1) {
                         World.remove(world, bodyA); World.remove(world, bodyB);
-                        const nextLevel = level + 1;
-                        const newSnack = createSnack(newX, newY, nextLevel); 
+                        const nextLevel = level + 1; const newSnack = createSnack(newX, newY, nextLevel); 
                         Matter.Body.setVelocity(newSnack, { x: (Math.random() - 0.5) * 2, y: -4 });
 
                         if (nextLevel === 5) { playGoodSound(); triggerEffect('good-effect', 'show-good'); } 
                         else if (nextLevel === 6) { playGreatSound(); triggerEffect('great-effect', 'show-great'); } 
-                        else if (nextLevel === 7) { 
-                            playWowSound(); triggerEffect('wow-effect', 'show-wow'); 
-                        } else { playMergeSound(nextLevel); }
+                        else if (nextLevel === 7) { playWowSound(); triggerEffect('wow-effect', 'show-wow'); } 
+                        else { playMergeSound(nextLevel); }
                     } 
                     else if (level === 7) { 
                         World.remove(world, bodyA); World.remove(world, bodyB); 
                         playClearSound(); triggerEffect('clear-effect', 'show-clear'); 
-                        
-                        startGoldenRain();
-                        triggerJackpotMagnet();
+                        startGoldenRain(); triggerJackpotMagnet();
                     }
                 }
             }
         });
 
+        // 💡 수정됨: 환경 테마에 따라 Canvas 안쪽 렌더링을 완전히 분기 처리
         function renderLoop() {
             if (!isShopOpen) {
                 ctx.clearRect(0, 0, canvas.width, canvas.height); frameCount++;
                 
+                const isNight = document.body.classList.contains('night-mode');
+                const isSummer = document.body.classList.contains('summer-mode');
+                
+                let innerColor, outerColor;
+                let backWallGrad0, backWallGrad1;
+                let sideGrad0, sideGrad1;
+                let botGrad0, botGrad1;
+
+                // 1. 테마별 컬러 변수 셋팅
+                if (isNight) {
+                    innerColor = "rgba(220, 40, 40, 0.6)"; outerColor = "rgb(220, 40, 40)";
+                    backWallGrad0 = "rgba(255, 255, 255, 0.1)"; backWallGrad1 = "rgba(255, 255, 255, 0)";
+                    sideGrad0 = "rgba(200, 220, 255, 0.1)"; sideGrad1 = "rgba(50, 70, 100, 0.4)";
+                    botGrad0 = "rgba(50, 70, 100, 0.8)"; botGrad1 = "rgba(20, 30, 50, 0.2)";
+                } else if (isSummer) {
+                    innerColor = "rgba(141, 110, 99, 0.6)"; outerColor = "rgb(78, 52, 46)";
+                    backWallGrad0 = "rgba(255, 236, 179, 0.8)"; backWallGrad1 = "rgba(255, 204, 128, 0.4)";
+                    sideGrad0 = "rgba(255, 236, 179, 0.6)"; sideGrad1 = "rgba(141, 110, 99, 0.3)";
+                    botGrad0 = "rgba(141, 110, 99, 0.5)"; botGrad1 = "rgba(78, 52, 46, 0.2)";
+                } else {
+                    // 기본 테마
+                    innerColor = "rgba(255, 177, 66, 0.6)"; outerColor = "rgb(255, 177, 66)";
+                    backWallGrad0 = "rgba(255, 255, 255, 0.45)"; backWallGrad1 = "rgba(255, 255, 255, 0)";
+                    sideGrad0 = "rgba(255, 255, 255, 0.6)"; sideGrad1 = "rgba(200, 180, 160, 0.2)";
+                    botGrad0 = "rgba(100, 80, 60, 0.4)"; botGrad1 = "rgba(160, 140, 120, 0.1)";
+                }
+                
+                // 2. 백그라운드 렌더링
                 const gradientTop = ctx.createLinearGradient(0, fy_top, 0, by_top);
-                gradientTop.addColorStop(0, "rgba(255, 255, 255, 0.45)"); gradientTop.addColorStop(1, "rgba(255, 255, 255, 0)");
+                gradientTop.addColorStop(0, backWallGrad0); gradientTop.addColorStop(1, backWallGrad1);
                 ctx.fillStyle = gradientTop; ctx.fillRect(bx1, by_top, bx2 - bx1, fy_top - by_top);
 
+                // 💡 여름 테마 전용 돗자리 렌더링 (가로줄 패턴)
+                if (isSummer) {
+                    ctx.strokeStyle = "rgba(141, 110, 99, 0.15)";
+                    ctx.lineWidth = 1.5;
+                    for(let y = by_top; y < fy_bot; y += 8) {
+                        ctx.beginPath(); ctx.moveTo(bx1, Math.max(by_top, y)); ctx.lineTo(bx2, Math.max(by_top, y)); ctx.stroke();
+                    }
+                }
+
                 const sideGradient = ctx.createLinearGradient(fx1, fy_top, bx1, by_top); 
-                sideGradient.addColorStop(0, "rgba(255, 255, 255, 0.6)"); sideGradient.addColorStop(1, "rgba(200, 180, 160, 0.2)"); 
+                sideGradient.addColorStop(0, sideGrad0); sideGradient.addColorStop(1, sideGrad1); 
                 ctx.fillStyle = sideGradient;
                 ctx.beginPath(); ctx.moveTo(fx1, fy_top); ctx.lineTo(bx1, by_top); ctx.lineTo(bx1, by_bot); ctx.lineTo(fx1, fy_bot); ctx.fill(); 
                 
                 const sideGradientRight = ctx.createLinearGradient(fx2, fy_top, bx2, by_top); 
-                sideGradientRight.addColorStop(0, "rgba(255, 255, 255, 0.6)"); sideGradientRight.addColorStop(1, "rgba(200, 180, 160, 0.2)"); 
+                sideGradientRight.addColorStop(0, sideGrad0); sideGradientRight.addColorStop(1, sideGrad1); 
                 ctx.fillStyle = sideGradientRight;
                 ctx.beginPath(); ctx.moveTo(fx2, fy_top); ctx.lineTo(bx2, by_top); ctx.lineTo(bx2, by_bot); ctx.lineTo(fx2, fy_bot); ctx.fill(); 
                 
                 const bottomGradient = ctx.createRadialGradient(canvas.width/2, fy_bot, 50, canvas.width/2, fy_bot, 200); 
-                bottomGradient.addColorStop(0, "rgba(100, 80, 60, 0.4)"); bottomGradient.addColorStop(1, "rgba(160, 140, 120, 0.1)"); 
+                bottomGradient.addColorStop(0, botGrad0); bottomGradient.addColorStop(1, botGrad1); 
                 ctx.fillStyle = bottomGradient;
                 ctx.beginPath(); ctx.moveTo(fx1, fy_bot); ctx.lineTo(bx1, by_bot); ctx.lineTo(bx2, by_bot); ctx.lineTo(fx2, fy_bot); ctx.fill();
 
-                const isNight = document.body.classList.contains('night-mode');
-                const innerColor = isNight ? "rgba(220, 40, 40, 0.6)" : "rgba(255, 177, 66, 0.6)";
-                const outerColor = isNight ? "rgb(220, 40, 40)" : "rgb(255, 177, 66)";
-
+                // 3. 테두리(Wireframe) 렌더링
                 ctx.strokeStyle = innerColor; 
                 ctx.lineWidth = 2; ctx.lineJoin = "round"; 
                 ctx.strokeRect(bx1, by_top, bx2 - bx1, by_bot - by_top); 
@@ -968,10 +862,8 @@
 
                 if (!isDropping) {
                     const r = SNACKS[currentDroppingIndex].radius; const safeX = Math.max(r + 20, Math.min(previewX, canvas.width - r - 20));
-                    
                     ctx.beginPath(); ctx.setLineDash([6, 5]); ctx.moveTo(safeX, dropY + r); ctx.lineTo(safeX, fy_bot);
                     ctx.strokeStyle = 'rgba(255, 120, 0, 0.9)'; ctx.lineWidth = 2.5; ctx.stroke(); ctx.setLineDash([]); 
-                    
                     ctx.globalAlpha = 0.8; let bob = Math.sin(frameCount * 0.1) * 3; const img = loadedImages[currentDroppingIndex]; if (img && img.complete) { ctx.drawImage(img, safeX - r, dropY - r + bob, r * 2, r * 2); } ctx.globalAlpha = 1.0;
                 }
 
@@ -980,13 +872,9 @@
                     if (body.label !== 'Wall' && body.label !== 'SafetyNet') { 
                         const level = parseInt(body.label); const img = loadedImages[level]; const r = SNACKS[level].radius; const visualR = r * 1.35; 
                         ctx.save(); 
-                        
                         if (body.position.y > fy_top && body.position.x > fx1 && body.position.x < fx2) {
-                            ctx.beginPath();
-                            ctx.rect(fx1, 0, fx2 - fx1, fy_bot);
-                            ctx.clip();
+                            ctx.beginPath(); ctx.rect(fx1, 0, fx2 - fx1, fy_bot); ctx.clip();
                         }
-
                         ctx.translate(body.position.x, body.position.y); ctx.rotate(body.angle);
                         if (img && img.complete) { ctx.drawImage(img, -visualR, -visualR, visualR * 2, visualR * 2); }
                         ctx.restore();
@@ -996,52 +884,34 @@
                 if (goldenRainParticles.length > 0) {
                     ctx.save();
                     goldenRainParticles.forEach((p, index) => {
-                        if(isRaining) {
-                            p.y += p.speed;
-                            p.x += Math.sin(p.wobble) * 1.5;
-                            p.wobble += p.wobbleSpeed;
-                        } else {
-                            p.y += p.speed * 1.5;
-                            p.opacity = Math.max(0, (canvas.height - p.y) / canvas.height); 
-                        }
+                        if(isRaining) { p.y += p.speed; p.x += Math.sin(p.wobble) * 1.5; p.wobble += p.wobbleSpeed; } 
+                        else { p.y += p.speed * 1.5; p.opacity = Math.max(0, (canvas.height - p.y) / canvas.height); }
 
                         if (p.y < canvas.height) {
-                            ctx.beginPath();
-                            ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+                            ctx.beginPath(); ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
                             ctx.fillStyle = `rgba(255, 215, 0, ${p.opacity !== undefined ? p.opacity : 0.8})`;
-                            ctx.shadowBlur = 10;
-                            ctx.shadowColor = '#FF8E0D';
-                            ctx.fill();
-                        } else if (!isRaining && p.y >= canvas.height) {
-                            goldenRainParticles.splice(index, 1);
-                        }
+                            ctx.shadowBlur = 10; ctx.shadowColor = '#FF8E0D'; ctx.fill();
+                        } else if (!isRaining && p.y >= canvas.height) { goldenRainParticles.splice(index, 1); }
                     });
                     ctx.restore();
                 }
 
                 const frontGlass = ctx.createLinearGradient(fx1, fy_top, fx2, fy_bot); 
                 frontGlass.addColorStop(0, "rgba(255, 255, 255, 0.2)"); frontGlass.addColorStop(0.5, "rgba(255, 255, 255, 0.05)"); frontGlass.addColorStop(1, "rgba(255, 255, 255, 0.1)");
-                
                 ctx.fillStyle = frontGlass; ctx.fillRect(fx1, fy_top, fx2 - fx1, fy_bot - fy_top);
-                ctx.strokeStyle = outerColor; 
-                ctx.lineWidth = 3; ctx.strokeRect(fx1, fy_top, fx2 - fx1, fy_bot - fy_top); 
+                ctx.strokeStyle = outerColor; ctx.lineWidth = 3; ctx.strokeRect(fx1, fy_top, fx2 - fx1, fy_bot - fy_top); 
             }
             requestAnimationFrame(renderLoop);
         }
 
         function getPointerX(e) { const rect = canvas.getBoundingClientRect(); const clientX = e.touches ? e.touches[0].clientX : e.clientX; return (clientX - rect.left) * (canvas.width / rect.width); }
-
         function dropSnack() {
             if (isDropping || isShopOpen) return; 
             initAudio(); isDropping = true;
             const r = SNACKS[currentDroppingIndex].radius; const safeX = Math.max(r + 20, Math.min(previewX, canvas.width - r - 20));
             createSnack(safeX, dropY, currentDroppingIndex); playDropSound(); 
-            
-            currentDroppingIndex = upcomingSnackIndex; 
-            upcomingSnackIndex = getRandomSnackIndex(); 
-            
-            document.getElementById('next-snack-img').src = SNACKS[upcomingSnackIndex].img;
-            setTimeout(() => { isDropping = false; }, 600);
+            currentDroppingIndex = upcomingSnackIndex; upcomingSnackIndex = getRandomSnackIndex(); 
+            document.getElementById('next-snack-img').src = SNACKS[upcomingSnackIndex].img; setTimeout(() => { isDropping = false; }, 600);
         }
 
         canvas.addEventListener('mousemove', (e) => { if(!isShopOpen) previewX = getPointerX(e); });
