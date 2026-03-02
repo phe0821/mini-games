@@ -353,14 +353,22 @@
 
     <script>
         const SNACKS = [
-            { name: "알사탕", radius: 22, img: "candy.png" },        
-            { name: "호두과자", radius: 30, img: "walnut.png" },      
-            { name: "델리만쥬", radius: 38, img: "manjoo.png" },      
-            { name: "왕만두", radius: 46, img: "mandu.png" },         
-            { name: "뚱붕어빵", radius: 52, img: "fish.png" },         
-            { name: "씨앗호떡", radius: 60, img: "hotteok.png" },      
-            { name: "대왕솜사탕", radius: 72, img: "cottoncandy.png" }, 
-            { name: "황금치킨", radius: 95, img: "chicken.png" }       
+            // 1. 알사탕: 여백이 거의 없이 꽉 차 있음 
+            { name: "알사탕", radius: 22, img: "candy.png", scale: 1.40 },        
+            // 2. 호두과자: 아주 약간의 여백이 있음 (85%)
+            { name: "호두과자", radius: 30, img: "walnut.png", scale: 1.40 },      
+            // 3. 델리만쥬: 호두과자와 비슷한 수준의 여백 (85%)
+            { name: "델리만쥬", radius: 38, img: "manjoo.png", scale: 1.35 },      
+            // 4. 왕만두: 기준점! 넉넉한 여백 (74%) -> 기존 1.35
+            { name: "왕만두", radius: 46, img: "mandu.png", scale: 1.32 },         
+            // 5. 뚱붕어빵: 꼬리 때문에 원형 기준 여백이 살짝 있음 (80%)
+            { name: "뚱붕어빵", radius: 52, img: "fish.png", scale: 1.32 },         
+            // 6. 씨앗호떡: 꽤 꽉 차 있는 형태 (85%)
+            { name: "씨앗호떡", radius: 60, img: "hotteok.png", scale: 1.32 },      
+            // 7. 대왕솜사탕: 스크린샷 분석 결과 진공 공간 매우 큼 (실제 비율 약 60~65%) -> 대폭 확대
+            { name: "대왕솜사탕", radius: 72, img: "cottoncandy.png", scale: 1.45 }, 
+            // 8. 황금치킨: 솜사탕과 마찬가지로 캔버스 내 투명 여백이 아주 큼 (실제 비율 약 60~65%) -> 대폭 확대
+            { name: "황금치킨", radius: 95, img: "chicken.png", scale: 1.43 }       
         ];
 
         const loadedImages = {};
@@ -878,9 +886,15 @@
                 const bodies = Matter.Composite.allBodies(world);
                 bodies.forEach(body => {
                     if (body.label !== 'Wall' && body.label !== 'SafetyNet') { 
-                        const level = parseInt(body.label); const img = loadedImages[level]; const r = SNACKS[level].radius; const visualR = r * 1.35; 
-                        ctx.save(); 
-                        if (body.position.y > fy_top && body.position.x > fx1 && body.position.x < fx2) {
+                        const level = parseInt(body.label); const img = loadedImages[level]; const r = SNACKS[level].radius; 
+			
+			// 💡 일괄 1.35배 대신, 배열에 설정한 맞춤 scale 값을 사용합니다.
+                        const scale = SNACKS[level].scale || 1.35; 
+                        const visualR = r * scale;
+
+			ctx.save(); 
+                        
+			if (body.position.y > fy_top && body.position.x > fx1 && body.position.x < fx2) {
                             ctx.beginPath(); ctx.rect(fx1, 0, fx2 - fx1, fy_bot); ctx.clip();
                         }
                         ctx.translate(body.position.x, body.position.y); ctx.rotate(body.angle);
