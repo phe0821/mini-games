@@ -341,7 +341,7 @@
             <div id="wow-effect" class="effect-text">WOW!</div>
             <div id="clear-effect" class="effect-text">Chicken<br>Clear!</div>
             <div id="game-over-text" class="effect-text">박스 터짐!</div>
-            <div id="jackpot-text">+3 🍗</div>
+            <div id="jackpot-text">+6 🍗</div>
             <canvas id="gameCanvas" width="360" height="600"></canvas>
         </div>
 
@@ -811,7 +811,7 @@
                     document.getElementById('total-chicken').innerText = lifetimeChickens;
                     
                     playCoinSound(count); walletBadge.classList.remove('pump'); void walletBadge.offsetWidth; walletBadge.classList.add('pump');
-                    count++; if(count >= 3) { clearInterval(coinInterval); setTimeout(() => walletBadge.classList.remove('pump'), 200); }
+                    count++; if(count >= 6) { clearInterval(coinInterval); setTimeout(() => walletBadge.classList.remove('pump'), 200); }
                 }, 150); 
             }, 3000 + 400); 
         }
