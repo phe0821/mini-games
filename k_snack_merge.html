@@ -19,6 +19,9 @@
             padding-top: max(35px, env(safe-area-inset-top)); 
             padding-bottom: max(15px, env(safe-area-inset-bottom));
             margin: 0; 
+
+            /* 🚨 디렉터님이 살려낸 생명줄!! (패딩 때문에 화면 길어지는 것 완벽 차단) */
+            box-sizing: border-box;
             
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             user-select: none; -webkit-user-select: none; touch-action: none;
