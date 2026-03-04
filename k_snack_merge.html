@@ -298,45 +298,7 @@
         @media screen and (max-height: 600px) {
             #app-grid { transform: scale(0.85); transform-origin: top center; margin-top: -10px; }
         }
-	
-        /* 📱 스마트폰 화면을 위한 기적의 심폐소생술 (UI 깨짐 완벽 방어) */
-        @media screen and (max-width: 480px) {
-            /* 1. 전체 게임 화면을 스마트폰 가로폭에 맞춰서 축소 */
-            #app-grid {
-                transform: scale(0.8);
-                transform-origin: top center;
-            }
-            
-            /* 2. 진화 공식이 박스 밖으로 안 나가게 크기 다이어트 */
-            #evolution-chain { padding: 5px 2px; }
-            .evo-small { width: 18px; height: 18px; }
-            .evo-big { width: 22px; height: 22px; }
-            .evo-math { font-size: 11px; }
-
-            /* 3. 상점 모달 텍스트 줄바꿈 허용 & 버튼 찌그러짐 방어 */
-            #shop-modal .modal-container {
-                width: 92vw; /* 화면에 꽉 차게 */
-                max-width: 350px;
-                padding: 10px;
-            }
-            .shop-item { padding: 8px; gap: 5px; }
-            .shop-item-desc {
-                word-break: normal; /* 단어가 길면 알아서 줄바꿈되도록 허용 */
-                white-space: normal;
-                font-size: 10px;
-            }
-            .shop-item-btn {
-                flex-shrink: 0; /* 텍스트가 밀어도 버튼은 절대 안 찌그러지게 고정 */
-                padding: 6px 8px;
-                font-size: 12px;
-            }
-        }
-
-        @media screen and (max-width: 380px) {
-            /* 가로폭이 더 좁은 폰(구형 갤럭시 등)을 위한 추가 압축 */
-            #app-grid { transform: scale(0.72); }
-        }
-        
+	    
 	</style>
 </head>
 <body>
