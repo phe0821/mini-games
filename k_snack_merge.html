@@ -519,7 +519,12 @@
               Bodies = Matter.Bodies, Events = Matter.Events, Runner = Matter.Runner, Composite = Matter.Composite;
 
         const engine = Engine.create(); const world = engine.world;
-        engine.gravity.y = 1.2; 
+        engine.gravity.y = 1.2;
+        // 🚀 [완벽 튜닝 1] 스피드는 아빠 폰(120)처럼 시원하게 2배속!
+        engine.timing.timeScale = 2.0; 
+        // 🛡️ [완벽 튜닝 2] 터널링 방지를 위해 물리 연산 정밀도 대폭 상향!
+        engine.positionIterations = 8;
+        engine.velocityIterations = 6;
         const canvas = document.getElementById('gameCanvas'); const ctx = canvas.getContext('2d');
 
         let lifetimeChickens = parseInt(localStorage.getItem('kSnackLifetimeChickens') || 0, 10);
@@ -625,11 +630,12 @@
         const dropY = 110; 
 
         const wallOptions = { isStatic: true, render: { fillStyle: 'transparent' }, friction: 0.05, restitution: 0.2, label: 'Wall' };
+        
+        // 🛡️ [완벽 튜닝 3] 디렉터님 지시 반영: 보폭이 커진 만큼 방어벽 무식하게 증축!
         World.add(world, [
-            // 💡 두께를 100px로 늘려서 뚫고 나가는 것 완벽 방지!
-            Bodies.rectangle(-30, 300, 100, 800, wallOptions), // 왼쪽 벽
-            Bodies.rectangle(390, 300, 100, 800, wallOptions), // 오른쪽 벽
-            Bodies.rectangle(180, 630, 400, 100, wallOptions)  // 바닥 벽
+            Bodies.rectangle(-80, 300, 200, 800, wallOptions), // 왼쪽 벽 2배 두껍게
+            Bodies.rectangle(440, 300, 200, 800, wallOptions), // 오른쪽 벽 2배 두껍게
+            Bodies.rectangle(180, 730, 400, 300, wallOptions)  // 바닥 3배 두껍게!
         ]);
 
         let goldenRainParticles = []; let isRaining = false;
@@ -745,7 +751,11 @@
             });
         });
 
-        let engineRunner = Runner.create(); 
+        // 🚀 [완벽 튜닝 4] 아이폰/갤럭시 모두 공평하게 1초에 60번 연산 고정 (배터리 세이브!)
+        let engineRunner = Runner.create({
+            isFixed: true,
+            delta: 1000 / 60
+        }); 
 
         document.getElementById('shop-btn').addEventListener('click', () => {
             initAudio(); playShopOpenSound(); isShopOpen = true; Runner.stop(engineRunner); 
